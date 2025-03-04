@@ -518,3 +518,146 @@ class FreshbooksClient:
         except Exception as e:
             logging.error(f"Error retrieving team members: {str(e)}")
             return None
+
+    def export_client_mappings(self, timeular_activities, filename="client_mappings.csv"):
+        """
+        Export a CSV file showing the mappings between Timeular activities and Freshbooks clients.
+        
+        This is useful for showing how activity names from Timeular are matched to clients in Freshbooks,
+        particularly when fuzzy matching is used.
+        
+        Args:
+            timeular_activities: List of activity names from Timeular
+            filename: Name of the CSV file to export (default: client_mappings.csv)
+            
+        Returns:
+            Path to the exported CSV file
+        """
+        import csv
+        import os
+        from datetime import datetime
+        
+        # Make sure we have clients loaded
+        if not hasattr(self, 'clients'):
+            self.get_clients()
+        
+        # Prepare the data for CSV
+        mappings = []
+        for activity in timeular_activities:
+            # Skip empty activity names
+            if not activity:
+                continue
+                
+            # Try to find a matching client
+            client = self.find_client_by_name(activity)
+            
+            # Determine match type
+            if client:
+                name_lower = activity.lower()
+                if name_lower in self.clients["by_name"]:
+                    match_type = "Exact match"
+                    score = "1.0"
+                else:
+                    match_type = "Fuzzy match"
+                    # Try to recalculate the fuzzy match score
+                    fuzzy_score = self._calculate_fuzzy_match_score(activity, client)
+                    score = f"{fuzzy_score:.2f}"
+            else:
+                match_type = "No match"
+                score = "0.0"
+            
+            mappings.append({
+                'timeular_activity': activity,
+                'freshbooks_client_name': f"{client.get('fname', '')} {client.get('lname', '')}" if client else "No match",
+                'freshbooks_organization': client.get('organization', '') if client else "N/A",
+                'freshbooks_client_id': client.get('id', '') if client else "N/A",
+                'match_type': match_type,
+                'score': score
+            })
+        
+        # Create filename with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename_with_timestamp = f"{os.path.splitext(filename)[0]}_{timestamp}{os.path.splitext(filename)[1]}"
+        
+        # Write to CSV
+        try:
+            with open(filename_with_timestamp, 'w', newline='', encoding='utf-8') as csvfile:
+                fieldnames = ['timeular_activity', 'freshbooks_client_name', 'freshbooks_organization', 
+                             'freshbooks_client_id', 'match_type', 'score']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                
+                writer.writeheader()
+                for mapping in mappings:
+                    writer.writerow(mapping)
+            
+            logging.info(f"Successfully exported client mappings to {filename_with_timestamp}")
+            return filename_with_timestamp
+        
+        except Exception as e:
+            logging.error(f"Error exporting client mappings: {str(e)}")
+            return None
+
+    def _calculate_fuzzy_match_score(self, name, client):
+        """
+        Calculate the fuzzy match score between a name and a client.
+        This replicates the logic from partial_match_client for consistency.
+        
+        Args:
+            name: String with client name to match
+            client: Client dict to match against
+            
+        Returns:
+            Fuzzy match score between 0 and 1
+        """
+        # Tokenize the input name
+        input_tokens = set(name.lower().replace('-', ' ').replace('/', ' ').split())
+        
+        # Remove common words that don't help with matching
+        stop_words = {'and', 'the', 'llc', 'inc', 'ltd', 'corp', 'corporation', 'company', 'co'}
+        input_tokens = {token for token in input_tokens if token not in stop_words}
+        
+        # Generate the client name key like in partial_match_client
+        full_name = f"{client.get('fname', '')} {client.get('lname', '')}".strip().lower()
+        organization = client.get('organization', '').lower()
+        
+        # Tokenize the client name and organization
+        client_tokens = set(full_name.replace('-', ' ').replace('/', ' ').split())
+        if organization:
+            client_tokens.update(organization.replace('-', ' ').replace('/', ' ').split())
+        
+        client_tokens = {token for token in client_tokens if token not in stop_words}
+        
+        # Calculate scores
+        if len(input_tokens) == 0 or len(client_tokens) == 0:
+            return 0.0
+            
+        # Overlap coefficient
+        overlap = len(input_tokens.intersection(client_tokens))
+        overlap_score = overlap / min(len(input_tokens), len(client_tokens))
+        
+        # Substring matches
+        substring_score = 0
+        for token in input_tokens:
+            if token in full_name:
+                substring_score += 0.5
+            if token in organization:
+                substring_score += 0.5
+        
+        substring_score = min(1.0, substring_score / len(input_tokens)) if input_tokens else 0
+        
+        # Initial matches
+        initial_score = 0
+        if client.get('fname') and client.get('lname'):
+            initials = (client.get('fname', '')[0] + client.get('lname', '')[0]).lower()
+            for token in input_tokens:
+                if len(token) == 2 and token.lower() == initials:
+                    initial_score = 0.8
+        
+        # Combined score
+        combined_score = (overlap_score * 0.6) + (substring_score * 0.3) + (initial_score * 0.1)
+        
+        # Boost for complete containment
+        if name.lower() in full_name or name.lower() in organization or full_name in name.lower() or organization in name.lower():
+            combined_score += 0.2
+        
+        return min(1.0, combined_score)  # Ensure score doesn't exceed 1.0

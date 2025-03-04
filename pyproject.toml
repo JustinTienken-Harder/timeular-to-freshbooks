@@ -1,0 +1,30 @@
+[tool.pdm]
+name = "timeular-freshbooks-integration"
+version = "0.1.0"
+description = "A Python project that integrates the Timeular API with Freshbooks."
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+readme = "README.md"
+distribution = true
+
+[tool.pdm.dependencies]
+requests = "^2.26.0"
+python-dotenv = "^0.19.2"
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[project]
+name = "timeular-freshbooks-integration"
+version = "0.1.0"
+description = "Timeular to freshbooks integrations. Hit Timeular API for tracked activities in the past week -- then upload everything to freshbooks."
+authors = [
+    {name = "JustinTienken-Harder", email = "justinhardermsc@gmail.com"},
+]
+dependencies = ["dotenv>=0.9.9", "flask>=3.1.0", "requests-oauthlib>=2.0.0", "pytz>=2025.1", "pandas>=2.2.3", "openpyxl>=3.1.5"]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+

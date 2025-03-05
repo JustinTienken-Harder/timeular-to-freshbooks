@@ -50,6 +50,7 @@ pip install pdm
 ```
 pip3 install pdm
 ```
+If this doesnt work try `brew install pdm`
 
 Verify PDM installation:
 ```

@@ -1,0 +1,23 @@
+[2025-03-04 21:39:19,069] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/Users/evelynlittlemac/timeular-to-freshbooks/.venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/evelynlittlemac/timeular-to-freshbooks/.venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/evelynlittlemac/timeular-to-freshbooks/.venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/evelynlittlemac/timeular-to-freshbooks/.venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/evelynlittlemac/timeular-to-freshbooks/src/freshbooks/authentication.py", line 119, in index
+    webbrowser.open(auth_url)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.2/Frameworks/Python.framework/Versions/3.13/lib/python3.13/webbrowser.py", line 94, in open
+    if browser.open(url, new, autoraise):
+       ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.2/Frameworks/Python.framework/Versions/3.13/lib/python3.13/webbrowser.py", line 599, in open
+    url = url.replace('"', '%22')
+          ^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'replace'
+127.0.0.1 - - [04/Mar/2025 21:39:19] "GET / HTTP/1.1" 500 -
+127.0.0.1 - - [04/Mar/2025 21:39:19] "GET /favicon.ico HTTP/1.1" 404 -

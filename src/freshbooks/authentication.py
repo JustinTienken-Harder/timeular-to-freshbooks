@@ -44,7 +44,7 @@ class FreshbooksOAuth:
         """Get the authorization URL to redirect the user."""
         authorization_url, state = self.oauth.authorization_url(self.AUTH_URL)
         self.session["oauth_state"] = state
-        return authorization_url, state
+        return authorization_url
     
     def fetch_token(self, authorization_response):
         """Exchange the authorization code for an access token."""

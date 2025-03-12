@@ -361,53 +361,56 @@ if __name__ == "__main__":
         exit(1)
     
     client = TimeularClient(api_key, api_secret)
-    try:
-        client.authenticate()
-        print("Authentication successful!")
-        #get a report of last week:
-        report = client.generate_report(datetime.now(pytz.UTC) - timedelta(days=30), format_type='csv')
-        print(report)
-        # pretty_json = json.dumps(report, indent=4, cls=DateTimeEncoder)
-        # print(pretty_json)
-        # json.dump(report, open("timeular_report.json", "w"), indent=4, cls = DateTimeEncoder)
-    except Exception as e:
-        print(f"Error: {str(e)}")
     # try:
-    #     # Authenticate with Timeular
     #     client.authenticate()
     #     print("Authentication successful!")
-        
-    #     # Get entries from last week
-    #     print("\nFetching time entries from the last week...")
-    #     # entries = client.get_last_week_entries()
-    #     entries = client.get_time_entries(datetime.now(pytz.UTC) - timedelta(days=30), datetime.now(pytz.UTC))
-    #     entries = client.format_entries(entries)
-    #     # Display entries
-    #     print(f"\nFound {len(entries)} time entries:")
-    #     for i, entry in enumerate(entries):
-    #         date = entry["start_time"].strftime("%Y-%m-%d")
-    #         print(f"{i+1}. {date}: {entry['activity_name']} - {entry['duration_hours']} hours")
-    #         if entry["note"]:
-    #             print(f"   Note: {entry['note']}")
-            
-    #     # Calculate total time per activity
-    #     activity_totals = {}
-    #     for entry in entries:
-    #         activity = entry["activity_name"]
-    #         if activity not in activity_totals:
-    #             activity_totals[activity] = 0
-    #         activity_totals[activity] += entry["duration_hours"]
-        
-    #     # Print summary
-    #     print("\nSummary by activity:")
-    #     for activity, hours in activity_totals.items():
-    #         print(f"- {activity}: {hours:.2f} hours")
-        
-    #     print(f"\nTotal hours tracked: {sum(activity_totals.values()):.2f}")
-    #     for entry in entries:
-    #         if entry['activity_name'] == "Studio Waltz":
-    #             print(entry)
-    #         else:
-    #             pass
+    #     #get a report of last week:
+    #     report = client.generate_report(datetime.now(pytz.UTC) - timedelta(days=14), format_type='csv')
+    #     print(report)
+    #     # pretty_json = json.dumps(report, indent=4, cls=DateTimeEncoder)
+    #     # print(pretty_json)
+    #     # json.dump(report, open("timeular_report.json", "w"), indent=4, cls = DateTimeEncoder)
     # except Exception as e:
     #     print(f"Error: {str(e)}")
+    try:
+        # Authenticate with Timeular
+        client.authenticate()
+        print("Authentication successful!")
+        
+        # Get entries from last week
+        print("\nFetching time entries from the last week...")
+        # entries = client.get_last_week_entries()
+        entries = client.get_time_entries(datetime.now(pytz.UTC) - timedelta(days=30), datetime.now(pytz.UTC))
+        entries = client.format_entries(entries)
+        # Save Entries:
+        with open("timeular_entries.json", "w") as f:
+            json.dump(entries, f, indent=2, default=str)
+        # Display entries
+        print(f"\nFound {len(entries)} time entries:")
+        for i, entry in enumerate(entries):
+            date = entry["start_time"].strftime("%Y-%m-%d")
+            print(f"{i+1}. {date}: {entry['activity_name']} - {entry['duration_hours']} hours")
+            if entry["note"]:
+                print(f"   Note: {entry['note']}")
+            
+        # Calculate total time per activity
+        activity_totals = {}
+        for entry in entries:
+            activity = entry["activity_name"]
+            if activity not in activity_totals:
+                activity_totals[activity] = 0
+            activity_totals[activity] += entry["duration_hours"]
+        
+        # Print summary
+        print("\nSummary by activity:")
+        for activity, hours in activity_totals.items():
+            print(f"- {activity}: {hours:.2f} hours")
+        
+        print(f"\nTotal hours tracked: {sum(activity_totals.values()):.2f}")
+        for entry in entries:
+            if entry['activity_name'] == "Studio Waltz":
+                print(entry)
+            else:
+                pass
+    except Exception as e:
+        print(f"Error: {str(e)}")

@@ -23,7 +23,7 @@ description = "Timeular to freshbooks integrations. Hit Timeular API for tracked
 authors = [
     {name = "JustinTienken-Harder", email = "justinhardermsc@gmail.com"},
 ]
-dependencies = ["dotenv>=0.9.9", "flask>=3.1.0", "requests-oauthlib>=2.0.0", "pytz>=2025.1", "pandas>=2.2.3", "openpyxl>=3.1.5"]
+dependencies = ["dotenv>=0.9.9", "flask>=3.1.0", "requests-oauthlib>=2.0.0", "pytz>=2025.1", "pandas>=2.2.3", "openpyxl>=3.1.5", "cryptography>=44.0.2"]
 requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "MIT"}

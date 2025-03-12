@@ -1,11 +1,67 @@
 import os
 import json
 import webbrowser
-import subprocess
 import ssl
 import tempfile
+import logging
+from datetime import datetime, timedelta
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography import x509
+from cryptography.x509.oid import NameOID
+from cryptography.hazmat.primitives import hashes
 from requests_oauthlib import OAuth2Session
 from flask import Flask, request, redirect
+
+def generate_self_signed_cert():
+    """Generate a self-signed certificate for HTTPS."""
+    # Generate private key
+    key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=2048,
+    )
+    
+    # Create a self-signed certificate
+    subject = issuer = x509.Name([
+        x509.NameAttribute(NameOID.COUNTRY_NAME, u"US"),
+        x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, u"California"),
+        x509.NameAttribute(NameOID.LOCALITY_NAME, u"San Francisco"),
+        x509.NameAttribute(NameOID.ORGANIZATION_NAME, u"Timeular Freshbooks Integration"),
+        x509.NameAttribute(NameOID.COMMON_NAME, u"localhost"),
+    ])
+    
+    cert = x509.CertificateBuilder().subject_name(
+        subject
+    ).issuer_name(
+        issuer
+    ).public_key(
+        key.public_key()
+    ).serial_number(
+        x509.random_serial_number()
+    ).not_valid_before(
+        datetime.utcnow()
+    ).not_valid_after(
+        datetime.utcnow() + timedelta(days=365)
+    ).add_extension(
+        x509.SubjectAlternativeName([x509.DNSName(u"localhost")]),
+        critical=False,
+    ).sign(key, hashes.SHA256())
+    
+    # Write the cert and key to temporary files
+    cert_file = tempfile.NamedTemporaryFile(delete=False)
+    key_file = tempfile.NamedTemporaryFile(delete=False)
+    
+    cert_file.write(cert.public_bytes(serialization.Encoding.PEM))
+    key_file.write(key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.TraditionalOpenSSL,
+        encryption_algorithm=serialization.NoEncryption()
+    ))
+    
+    cert_file.close()
+    key_file.close()
+    
+    return cert_file.name, key_file.name
 
 class FreshbooksOAuth:
     """OAuth2 handler for Freshbooks API with HTTPS support."""
@@ -13,20 +69,33 @@ class FreshbooksOAuth:
     # Freshbooks OAuth endpoints
     AUTH_URL = "https://my.freshbooks.com/service/auth/oauth/authorize"
     TOKEN_URL = "https://api.freshbooks.com/auth/oauth/token"
-    REDIRECT_URI = "https://localhost:8443/callback"
+    REDIRECT_URI = "https://localhost:8443/callback"  # Use HTTPS for production
     
     def __init__(self, client_id, client_secret, token_file="oauth_token.json"):
         self.client_id = client_id
         self.client_secret = client_secret
         self.token_file = token_file
         self.token = self._load_token()
+        self.state = None
         
         # Create OAuth session
         self.oauth = OAuth2Session(
             client_id=self.client_id,
             redirect_uri=self.REDIRECT_URI,
         )
-        self.session = {}
+    
+    def make_new_session_with_state(self):
+        """Create a new OAuth session with a new state."""
+        current_state = self.state
+        self.oauth = OAuth2Session(
+            self.client_id,
+            token = current_state, 
+            redirect_uri=self.REDIRECT_URI,
+        )
+        self.oauth.headers.update({
+            'User-Agent': 'FreshBooks API (python) 1.0.0',
+            'Content-Type': 'application/json'
+        })
     
     def _load_token(self):
         """Load the OAuth token from file if it exists."""
@@ -43,19 +112,17 @@ class FreshbooksOAuth:
     def get_authorization_url(self):
         """Get the authorization URL to redirect the user."""
         authorization_url, state = self.oauth.authorization_url(self.AUTH_URL)
-        self.session["oauth_state"] = state
+        self.state = state
         return authorization_url
     
-    def fetch_token(self, authorization_response):
+    def fetch_token(self, full_url):
         """Exchange the authorization code for an access token."""
-        self.oauth = OAuth2Session(
-            client_id=self.client_id,
-            token = self.session['oauth_state'],
-            redirect_uri=self.REDIRECT_URI)
+        print(f"Got the full url: {full_url}")
+        self.make_new_session_with_state()
         token = self.oauth.fetch_token(
             self.TOKEN_URL,
-            client_secret=self.client_secret,
-            authorization_response=request.url
+            client_secret = self.client_secret,
+            authorization_response = full_url
         )
         self._save_token(token)
         self.token = token
@@ -81,27 +148,6 @@ class FreshbooksOAuth:
         return self.oauth
 
 
-def generate_self_signed_cert():
-    """Generate a self-signed certificate for local HTTPS."""
-    cert_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pem')
-    key_file = tempfile.NamedTemporaryFile(delete=False, suffix='.key')
-    
-    cert_path = cert_file.name
-    key_path = key_file.name
-    
-    cert_file.close()
-    key_file.close()
-    
-    # Generate self-signed certificate using OpenSSL
-    subprocess.run([
-        'openssl', 'req', '-x509', '-newkey', 'rsa:4096',
-        '-nodes', '-out', cert_path, '-keyout', key_path,
-        '-days', '365', '-subj', '/CN=localhost'
-    ])
-    
-    return cert_path, key_path
-
-
 def start_oauth_flow(client_id, client_secret):
     """Start the OAuth flow with a local HTTPS web server."""
     oauth_handler = FreshbooksOAuth(client_id, client_secret)
@@ -113,30 +159,100 @@ def start_oauth_flow(client_id, client_secret):
     # Create a simple Flask app to handle the callback
     app = Flask(__name__)
     
+    # Configure logging
+    logging.basicConfig(level=logging.INFO)
+    
     @app.route('/')
     def index():
-        auth_url = oauth_handler.get_authorization_url()
-        webbrowser.open(auth_url)
-        return "Opened browser for authorization. Please check your browser window."
+        try:
+            # Properly unpack the tuple returned from get_authorization_url()
+            auth_url = oauth_handler.get_authorization_url()
+            print(f"Opening browser to: {auth_url}")
+            webbrowser.open(auth_url, new = 1)
+            return "Opened browser for authorization. Please check your browser window and approve the access request."
+        except Exception as e:
+            logging.error(f"Error generating authorization URL: {str(e)}")
+            return f"Error: {str(e)}"
     
     @app.route('/callback')
     def callback():
         try:
-            token = oauth_handler.fetch_token(request.url)
-            return "Authorization successful! Token saved to file. You can close this window now."
+            # Get the full URL including the authorization code
+            full_url = request.url
+            
+            # If behind a proxy, it might not have the scheme
+            if not full_url.startswith('https'):
+                full_url = 'https://' + request.host + request.full_path
+                print("Detected proxy, using HTTPS scheme.")
+                
+            print(f"Callback received: {full_url}")
+            
+            # Exchange the authorization code for an access token
+            token = oauth_handler.fetch_token(full_url)
+            print("Token successfully obtained!")
+            
+            # Shutdown the Flask server after successful authorization
+            def shutdown():
+                request.environ.get('werkzeug.server.shutdown')()
+            
+            # Use a separate thread to shutdown the server
+            import threading
+            threading.Timer(1, lambda: os._exit(0)).start()
+            
+            return """
+            <html>
+                <head>
+                    <title>Authorization Successful</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+                        .success { background-color: #d4edda; border-color: #c3e6cb; color: #155724; padding: 15px; border-radius: 5px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="success">
+                        <h2>Authorization Successful!</h2>
+                        <p>Token saved to file. You can close this window and return to the application.</p>
+                    </div>
+                </body>
+            </html>
+            """
         except Exception as e:
-            return f"Error during authorization: {str(e)}"
+            logging.error(f"Error in callback: {str(e)}")
+            return f"""
+            <html>
+                <head>
+                    <title>Authorization Error</title>
+                    <style>
+                        body {{ font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }}
+                        .error {{ background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; padding: 15px; border-radius: 5px; }}
+                    </style>
+                </head>
+                <body>
+                    <div class="error">
+                        <h2>Authorization Error</h2>
+                        <p>Error during authorization: {str(e)}</p>
+                        <p>Please close this window and try again.</p>
+                    </div>
+                </body>
+            </html>
+            """
     
+    print("\n" + "=" * 80)
     print("Starting local HTTPS server for OAuth callback...")
     print("NOTE: Your browser may show a security warning - this is expected with a self-signed certificate.")
-    print("You can safely proceed through the warning for local development purposes.")
+    print("You can safely proceed through the warning for this local authentication process.")
+    print("=" * 80 + "\n")
     
     try:
-        app.run(host='localhost', port=8443, ssl_context=ssl_context)
+        # Run the Flask app with SSL
+        app.run(host='localhost', port=8443, ssl_context=ssl_context, debug=False)
     finally:
         # Clean up temporary certificate files
-        os.unlink(cert_path)
-        os.unlink(key_path)
+        try:
+            os.unlink(cert_path)
+            os.unlink(key_path)
+        except:
+            pass
     
     return oauth_handler
 

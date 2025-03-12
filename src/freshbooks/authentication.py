@@ -377,9 +377,13 @@ def start_oauth_flow(client_id, client_secret, handle_csv=False):
     
     @app.route('/upload', methods=['POST'])
     def upload_file():
+        if request.method == 'GET':
+            # If someone tries to access /upload directly with GET, just redirect to the main page
+            return redirect('/')
+        
         if not app.config['AUTHENTICATED']:
             return redirect('/')
-            
+
         # Check if the post request has the file part
         if 'csvfile' not in request.files:
             flash('No file selected', 'error')
@@ -477,8 +481,17 @@ def process_timeular_data(df, oauth_handler):
         fuzzy_matches = []
         successful_entries = 0
         for _, row in df.iterrows():
-            # Convert row to dictionary
-            time_entry = row.to_dict()
+            # Convert row to dictionary and clean up pandas types
+            time_entry = {}
+            for col, val in row.items():
+                # Convert pandas Timestamp to ISO format string
+                if hasattr(val, 'isoformat'):
+                    time_entry[col] = val.isoformat()
+                # Convert NaN/None values to empty string or None
+                elif pd.isna(val):
+                    time_entry[col] = None
+                else:
+                    time_entry[col] = val
             # print(time_entry)
 
             result = client.create_time_entry(time_entry)

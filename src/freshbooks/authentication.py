@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import json
 import webbrowser
 import ssl
@@ -533,9 +534,9 @@ def get_freshbooks_session(client_id, client_secret, token_file="oauth_token.jso
 
 if __name__ == "__main__":
     # Get client credentials from environment
-    client_id = os.getenv("FRESHBOOKS_CLIENT_ID")
+    load_dotenv()
+    client_id = os.getenv("FRESHBOOKS_CLIENT_ID") 
     client_secret = os.getenv("FRESHBOOKS_CLIENT_SECRET")
-    
     if not client_id or not client_secret:
         print("Please set FRESHBOOKS_CLIENT_ID and FRESHBOOKS_CLIENT_SECRET environment variables")
         exit(1)

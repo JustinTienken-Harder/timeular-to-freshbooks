@@ -20,7 +20,7 @@ class FreshbooksClient(ServicesMixin, ClientsMixin, FuzzyMatchingMixin):
         self.api_key = api_token
         self.business_id = business_id
         self.base_url = "https://api.freshbooks.com"
-        self.dont_send = True 
+        self.dont_send = False 
     
         # If business_id not provided, load it
         if not self.business_id:

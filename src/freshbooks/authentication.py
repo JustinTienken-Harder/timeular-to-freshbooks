@@ -4,7 +4,7 @@ import webbrowser
 import ssl
 import tempfile
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography import x509
@@ -14,9 +14,12 @@ from requests_oauthlib import OAuth2Session
 from flask import Flask, request, redirect, render_template_string, flash, url_for
 from werkzeug.utils import secure_filename
 import pandas as pd
-
+import requests
+import calendar
+import time
 
 from freshbooks.client import FreshbooksClient
+from timeular.client import TimeularClient
 
 def generate_self_signed_cert():
     """Generate a self-signed certificate for HTTPS."""
@@ -424,6 +427,74 @@ def start_oauth_flow(client_id, client_secret, handle_csv=False):
         except Exception as e:
             flash(f'Error processing file: {str(e)}', 'error')
             logging.error(f"Error processing file: {str(e)}")
+            return redirect('/')
+    
+    @app.route('/process-timeular-api', methods=['POST'])
+    def process_timeular_api():
+        if not app.config['AUTHENTICATED']:
+            return redirect('/')
+        
+        try:
+            # Get form data
+            api_key = request.form.get('api_key')
+            api_secret = request.form.get('api_secret')
+            date_range = request.form.get('date_range')
+            
+            if not api_key or not api_secret or not date_range:
+                flash('Please provide all required information', 'error')
+                return redirect('/')
+            
+            # Parse date range
+            dates = date_range.split(' to ')
+            if len(dates) != 2:
+                # If not in "YYYY-MM-DD to YYYY-MM-DD" format, try to parse as a single date
+                try:
+                    start_date = datetime.strptime(date_range, "%Y-%m-%d")
+                    end_date = start_date + timedelta(days=1)  # Use the next day as end date
+                except:
+                    flash('Invalid date range format. Please select a valid date range.', 'error')
+                    return redirect('/')
+            else:
+                start_date = datetime.strptime(dates[0], "%Y-%m-%d")
+                end_date = datetime.strptime(dates[1], "%Y-%m-%d") + timedelta(days=1)  # Add one day to include the end date
+            
+            # Set timezone to UTC
+            start_date = start_date.replace(tzinfo=timezone.utc)
+            end_date = end_date.replace(tzinfo=timezone.utc)
+            
+            # Convert to ISO format for Timeular API
+            start_iso = start_date.isoformat()
+            end_iso = end_date.isoformat()
+            
+            # Initialize Timeular client and get time entries
+            timeular_client = TimeularClient(api_key, api_secret)
+            time_entries = timeular_client.get_time_entries(start_iso, end_iso)
+            
+            # Convert to FreshBooks format
+            df = timeular_client.convert_to_freshbooks_format(time_entries)
+            
+            if df.empty:
+                flash('No time entries found in the selected date range.', 'warning')
+                return redirect('/')
+            
+            # Process the data and send to FreshBooks
+            rows_processed, failed_entries, fuzzy_matches = process_timeular_data(df, app.config['OAUTH_HANDLER'])
+            
+            # Store failed entries and fuzzy matches in app config
+            app.config['FAILED_ENTRIES'] = failed_entries
+            app.config['FUZZY_MATCHES'] = fuzzy_matches
+            
+            flash(f'Timeular data processed successfully! {rows_processed} time entries uploaded to FreshBooks.', 'success')
+            return redirect('/')
+            
+        except ValueError as ve:
+            flash(f'Error: {str(ve)}', 'error')
+            return redirect('/')
+        except Exception as e:
+            flash(f'Error processing Timeular API data: {str(e)}', 'error')
+            logging.error(f"Error processing Timeular API data: {str(e)}")
+            import traceback
+            logging.error(traceback.format_exc())
             return redirect('/')
     
     print("\n" + "=" * 80)

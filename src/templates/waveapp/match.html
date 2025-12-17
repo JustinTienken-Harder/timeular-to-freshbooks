@@ -1,0 +1,334 @@
+{% extends "waveapp/base.html" %}
+
+{% block title %}Match Activities & Services - WaveApp Invoice Generator{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="header-section">
+        <h2>Match Activities & Services</h2>
+        <p class="subtitle">Map your Timeular activities to WaveApp customers and services</p>
+        
+        {% if summary %}
+        <div class="summary-stats">
+            <div class="stat">
+                <span class="stat-value">{{ summary.total_activities }}</span>
+                <span class="stat-label">Activities</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">{{ summary.total_tags }}</span>
+                <span class="stat-label">Services</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">{{ "%.1f"|format(summary.total_hours) }}</span>
+                <span class="stat-label">Hours</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <form action="{{ url_for('submit_mappings') }}" method="POST" id="mappingForm">
+        <!-- Activity to Customer Mapping -->
+        <section class="mapping-section">
+            <h3>📊 Map Activities to Customers</h3>
+            <p class="section-desc">Select which WaveApp customer each activity belongs to</p>
+            
+            <div class="mapping-grid">
+                {% for activity in activities %}
+                <div class="mapping-row">
+                    <div class="source-item">
+                        <strong>{{ activity }}</strong>
+                        <span class="hours-badge">{{ "%.1f"|format(processed_data[activity].total_hours) }}h</span>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="target-item">
+                        <select name="activity_{{ activity }}" 
+                                class="select-customer" 
+                                required
+                                data-search="true">
+                            <option value="">Select customer...</option>
+                            {% for customer in customers %}
+                            <option value="{{ customer.id }}">
+                                {{ customer.name }}{% if customer.email %} ({{ customer.email }}){% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+        <!-- Tag to Service Mapping -->
+        <section class="mapping-section">
+            <h3>🏷️ Map Tags to Services</h3>
+            <p class="section-desc">Select which WaveApp service each tag represents</p>
+            
+            <div class="mapping-grid">
+                {% for tag in tags %}
+                <div class="mapping-row">
+                    <div class="source-item">
+                        <strong>{{ tag if tag else '(No Tag)' }}</strong>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="target-item">
+                        <select name="tag_{{ tag }}" 
+                                class="select-service" 
+                                required
+                                data-search="true">
+                            <option value="">Select service...</option>
+                            {% for product in products %}
+                            <option value="{{ product.id }}" data-price="{{ product.price }}">
+                                {{ product.name }} - ${{ "%.2f"|format(product.price) }}/hr
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+        <div class="button-group">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                <span>← Back</span>
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <span>Preview Invoices</span>
+                <span class="btn-icon">→</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .card {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .header-section {
+        margin-bottom: 40px;
+    }
+    
+    .card h2 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        color: #2d3748;
+    }
+    
+    .subtitle {
+        color: #718096;
+        margin-bottom: 20px;
+    }
+    
+    .summary-stats {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+        padding: 20px;
+        background: #f7fafc;
+        border-radius: 8px;
+    }
+    
+    .stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: #718096;
+        margin-top: 5px;
+    }
+    
+    .mapping-section {
+        margin-bottom: 40px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .mapping-section:last-of-type {
+        border-bottom: none;
+    }
+    
+    .mapping-section h3 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+        color: #2d3748;
+    }
+    
+    .section-desc {
+        color: #718096;
+        margin-bottom: 25px;
+    }
+    
+    .mapping-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .mapping-row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 20px;
+        align-items: center;
+        padding: 15px;
+        background: #f7fafc;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .mapping-row:hover {
+        background: #edf2f7;
+    }
+    
+    .source-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #2d3748;
+    }
+    
+    .hours-badge {
+        background: #667eea;
+        color: white;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .arrow {
+        color: #cbd5e0;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    
+    .target-item {
+        flex: 1;
+    }
+    
+    select {
+        width: 100%;
+        padding: 10px 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 1rem;
+        color: #2d3748;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    select:invalid {
+        border-color: #fc8181;
+    }
+    
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 40px;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-secondary {
+        background: #e2e8f0;
+        color: #4a5568;
+    }
+    
+    .btn-secondary:hover {
+        background: #cbd5e0;
+    }
+    
+    .btn-icon {
+        font-size: 1.3rem;
+    }
+    
+    @media (max-width: 768px) {
+        .mapping-row {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .arrow {
+            display: none;
+        }
+        
+        .summary-stats {
+            flex-direction: column;
+            gap: 15px;
+        }
+    }
+</style>
+
+<script>
+    // Form validation
+    document.getElementById('mappingForm').addEventListener('submit', function(e) {
+        const selects = this.querySelectorAll('select');
+        let hasError = false;
+        
+        selects.forEach(select => {
+            if (!select.value) {
+                select.style.borderColor = '#fc8181';
+                hasError = true;
+            }
+        });
+        
+        if (hasError) {
+            e.preventDefault();
+            alert('Please select a mapping for all activities and services');
+        }
+    });
+    
+    // Reset border color on selection
+    document.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', function() {
+            if (this.value) {
+                this.style.borderColor = '#e2e8f0';
+            }
+        });
+    });
+</script>
+{% endblock %}

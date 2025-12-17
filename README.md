@@ -1,12 +1,20 @@
 # Timeular and Freshbooks Integration
 
-This project integrates the Timeular API with Freshbooks to streamline time tracking and invoicing processes.
+This project integrates the Timeular API with Freshbooks and WaveApp to streamline time tracking and invoicing processes.
 
 ## Features
 
+### FreshBooks Integration (Original)
 - Connects to the Timeular API to retrieve time entries.
 - Creates invoices in Freshbooks based on time entries from Timeular.
 - Provides a simple command-line interface to manage the integration.
+
+### WaveApp Integration (New!)
+- **Browser-based interface** for uploading Timeular CSV exports
+- **Interactive matching** of activities to WaveApp customers and tags to services
+- **Automatic invoice generation** with consolidated time entries
+- **Note aggregation** - combines all time entry notes for each service
+- **Smart pricing** - uses WaveApp product pricing (ignores Timeular rates)
 
 ## Prerequisites
 
@@ -78,7 +86,41 @@ pdm --version
 
 ## Usage
 
-To run the integration, execute the following command:
+### Option 1: WaveApp Integration (Recommended)
+
+1. Start the Flask web server:
+   ```
+   pdm run python src/waveapp_server.py
+   ```
+
+2. Open your browser to `http://localhost:5001`
+
+3. Follow the workflow:
+## Configuration
+
+Make sure to set the following environment variables in your .env file:
+
+### WaveApp Configuration (for WaveApp integration)
+- `WAVEAPP_API_TOKEN`: Your WaveApp API token
+- `WAVEAPP_BUSINESS_ID`: Your WaveApp business ID
+- `FLASK_SECRET_KEY`: Random secret key for Flask sessions
+
+### Timeular Configuration
+- `TIMEULAR_API_KEY`: Your Timeular API key
+- `TIMEULAR_API_SECRET`: Your Timeular API secret
+
+### FreshBooks Configuration (for FreshBooks integration)
+- `FRESHBOOKS_CLIENT_ID`: Your Freshbooks OAuth client ID
+- `FRESHBOOKS_CLIENT_SECRET`: Your Freshbooks OAuth client secret
+- `FRESHBOOKS_BUSINESS_ID`: Your Freshbooks business ID (found in account settings)
+
+### Getting WaveApp API Credentials
+
+1. Log in to your WaveApp account
+2. Go to **Settings** → **API Access**
+3. Create a new API token (Full Access or Invoice Management)
+4. Copy your API token and Business ID
+5. Add them to your `.env` file
 ```
 pdm run python src/main.py
 ```

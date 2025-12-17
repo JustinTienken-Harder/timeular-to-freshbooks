@@ -1,0 +1,173 @@
+{
+    "period": {
+      "start_date": "2025-02-02",
+      "end_date": "2025-03-04"
+    },
+    "activity_totals": {
+      "AllAmericanSweep": {
+        "total_hours": 0.5,
+        "entry_count": 1,
+        "entries": [
+          {
+            "id": "99133952",
+            "activity_id": "1825855",
+            "activity_name": "AllAmericanSweep",
+            "start_time": "2025-02-02T20:15:41Z",
+            "end_time": "2025-02-02T20:56:32Z",
+            "duration_hours": 0.5,
+            "note": "Time related to handling issues with both payment and management of the website losing the email due to spam attack on the server generated from the website. Clean out entries, verify ReCaptcha and install, setup, fix issues on Siteground (then support to fix billing on siteground)",
+            "tags": [],
+            "is_ongoing": false
+          }
+        ]
+      },
+      "Studio Waltz": {
+        "total_hours": 8.0,
+        "entry_count": 3,
+        "entries": [
+          {
+            "id": "99134749",
+            "activity_id": "1627080",
+            "activity_name": "Studio Waltz",
+            "start_time": "2025-02-02T21:10:00Z",
+            "end_time": "2025-02-02T23:52:53Z",
+            "duration_hours": 2.5,
+            "note": "Start Studio Waltz website work, graphics creation, send emails to group, coordinate adding maps and artists, and publish.",
+            "tags": [],
+            "is_ongoing": false
+          },
+          {
+            "id": "99188121",
+            "activity_id": "1627080",
+            "activity_name": "Studio Waltz",
+            "start_time": "2025-02-03T17:39:15Z",
+            "end_time": "2025-02-03T22:40:06Z",
+            "duration_hours": 5.0,
+            "note": "work on brochure and poster - send emails and manage communications. Run zoom meeting and final tweaks to site - create bio for Trish and add to the website",
+            "tags": [],
+            "is_ongoing": false
+          },
+          {
+            "id": "99359531",
+            "activity_id": "1627080",
+            "activity_name": "Studio Waltz",
+            "start_time": "2025-02-06T18:00:00Z",
+            "end_time": "2025-02-06T18:30:00Z",
+            "duration_hours": 0.5,
+            "note": "work on newsletter",
+            "tags": [],
+            "is_ongoing": false
+          }
+        ]
+      },
+      "SPC: IR": {
+        "total_hours": 4.0,
+        "entry_count": 3,
+        "entries": [
+          {
+            "id": "99184597",
+            "activity_id": "1465818",
+            "activity_name": "SPC: IR",
+            "start_time": "2025-02-03T16:34:33Z",
+            "end_time": "2025-02-03T17:00:27Z",
+            "duration_hours": 0.5,
+            "note": "Isolating what will happen with request to fix things on the IR page from marketing (which I am not clear on) and handle item #2",
+            "tags": [],
+            "is_ongoing": false
+          },
+          {
+            "id": "99304036",
+            "activity_id": "1465818",
+            "activity_name": "SPC: IR",
+            "start_time": "2025-02-05T17:52:49Z",
+            "end_time": "2025-02-05T18:18:58Z",
+            "duration_hours": 0.5,
+            "note": "Call with Matthew to adjust.",
+            "tags": [],
+            "is_ongoing": false
+          },
+          {
+            "id": "99958043",
+            "activity_id": "1465818",
+            "activity_name": "SPC: IR",
+            "start_time": "2025-02-20T00:48:15Z",
+            "end_time": "2025-02-20T03:52:52Z",
+            "duration_hours": 3.0,
+            "note": null,
+            "tags": [],
+            "is_ongoing": false
+          }
+        ]
+      },
+      "GulfCoast": {
+        "total_hours": 3.25,
+        "entry_count": 4,
+        "entries": [
+          {
+            "id": "99243116",
+            "activity_id": "1140175",
+            "activity_name": "GulfCoast",
+            "start_time": "2025-02-04T15:55:00Z",
+            "end_time": "2025-02-04T17:07:12Z",
+            "duration_hours": 1.0,
+            "note": "review with Hana if there is an issue with a pdf that is showing publically (when should not). With Team, install Akismet license and activate with Gravity/Plugins, review with team purchase of Wordfence, approvals, license purchased and installed. Reviewing process for tickets, and discuss cache issues.",
+            "tags": [],
+            "is_ongoing": false
+          },
+          {
+            "id": "99829486",
+            "activity_id": "1140175",
+            "activity_name": "GulfCoast",
+            "start_time": "2025-02-18T03:00:00Z",
+            "end_time": "2025-02-18T03:10:00Z",
+            "duration_hours": 0.25,
+            "note": "Review changes and update license for plugin - update spreadsheet for group use on Monday.",
+            "tags": [],
+            "is_ongoing": false
+          },
+          {
+            "id": "99871170",
+            "activity_id": "1140175",
+            "activity_name": "GulfCoast",
+            "start_time": "2025-02-18T18:15:00Z",
+            "end_time": "2025-02-18T19:10:08Z",
+            "duration_hours": 1.0,
+            "note": "Team meeting to discuss projects and progress. Update MONDAY, updated the Plugin List to group. Updated Heart.",
+            "tags": [],
+            "is_ongoing": false
+          },
+          {
+            "id": "100159940",
+            "activity_id": "1140175",
+            "activity_name": "GulfCoast",
+            "start_time": "2025-02-25T18:30:51Z",
+            "end_time": "2025-02-25T19:35:25Z",
+            "duration_hours": 1.0,
+            "note": "meeting with crew - review a few things discussed in meeting and update Monday with upcoming tasks",
+            "tags": [],
+            "is_ongoing": false
+          }
+        ]
+      }
+    },
+    "daily_totals": {
+      "2025-02-02": 3.0,
+      "2025-02-03": 5.5,
+      "2025-02-04": 1.0,
+      "2025-02-05": 4.25,
+      "2025-02-06": 3.5,
+      "2025-02-07": 1.25,
+      "2025-02-11": 3.0,
+      "2025-02-12": 1.5,
+      "2025-02-15": 3.0,
+      "2025-02-18": 4.0,
+      "2025-02-19": 3.75,
+      "2025-02-20": 7.75,
+      "2025-02-21": 7.5,
+      "2025-02-24": 5.25,
+      "2025-02-25": 3.5,
+      "2025-02-28": 1.75,
+      "2025-03-03": 6.5
+    },
+    "grand_total": 66.0
+  }

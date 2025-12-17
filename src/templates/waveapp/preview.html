@@ -1,0 +1,295 @@
+{% extends "waveapp/base.html" %}
+
+{% block title %}Preview Invoices - WaveApp Invoice Generator{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Preview Invoices</h2>
+    <p class="subtitle">Review invoices before sending to WaveApp</p>
+    
+    <div class="invoice-summary">
+        <div class="summary-item">
+            <span class="summary-label">Total Invoices:</span>
+            <span class="summary-value">{{ total_invoices }}</span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Grand Total:</span>
+            <span class="summary-value">${{ "%.2f"|format(invoices|sum(attribute='total')) }}</span>
+        </div>
+    </div>
+    
+    <div class="invoices-container">
+        {% for invoice in invoices %}
+        <div class="invoice-card">
+            <div class="invoice-header">
+                <div>
+                    <h3>{{ invoice.customer_name }}</h3>
+                    {% if invoice.customer_email %}
+                    <p class="customer-email">{{ invoice.customer_email }}</p>
+                    {% endif %}
+                </div>
+                <div class="invoice-total">
+                    ${{ "%.2f"|format(invoice.total) }}
+                </div>
+            </div>
+            
+            <table class="line-items-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Hours</th>
+                        <th>Rate</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in invoice.line_items %}
+                    <tr>
+                        <td>
+                            <strong>{{ item.product_name }}</strong>
+                            {% if item.notes %}
+                            <div class="item-notes">{{ item.notes }}</div>
+                            {% endif %}
+                        </td>
+                        <td>{{ "%.2f"|format(item.quantity) }}</td>
+                        <td>${{ "%.2f"|format(item.rate) }}</td>
+                        <td class="amount">${{ "%.2f"|format(item.total) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><strong>Invoice Total</strong></td>
+                        <td class="amount"><strong>${{ "%.2f"|format(invoice.total) }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <form action="{{ url_for('generate_invoices') }}" method="POST">
+        <div class="button-group">
+            <a href="{{ url_for('match') }}" class="btn btn-secondary">
+                <span>← Back to Matching</span>
+            </a>
+            <button type="submit" class="btn btn-primary" id="generateBtn">
+                <span>Generate Invoices in WaveApp</span>
+                <span class="btn-icon">✓</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .card {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .card h2 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        color: #2d3748;
+    }
+    
+    .subtitle {
+        color: #718096;
+        margin-bottom: 30px;
+    }
+    
+    .invoice-summary {
+        display: flex;
+        gap: 40px;
+        padding: 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 8px;
+        margin-bottom: 30px;
+        color: white;
+    }
+    
+    .summary-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .summary-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+    
+    .summary-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+    
+    .invoices-container {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+    
+    .invoice-card {
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 25px;
+        background: #f7fafc;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    
+    .invoice-header h3 {
+        font-size: 1.3rem;
+        color: #2d3748;
+        margin-bottom: 5px;
+    }
+    
+    .customer-email {
+        color: #718096;
+        font-size: 0.9rem;
+    }
+    
+    .invoice-total {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+    
+    .line-items-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .line-items-table th {
+        text-align: left;
+        padding: 15px 25px;
+        background: #edf2f7;
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .line-items-table td {
+        padding: 15px 25px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #2d3748;
+    }
+    
+    .line-items-table tbody tr:hover {
+        background: #f7fafc;
+    }
+    
+    .line-items-table tfoot td {
+        padding: 20px 25px;
+        border-bottom: none;
+        background: #f7fafc;
+    }
+    
+    .item-notes {
+        margin-top: 8px;
+        padding: 10px;
+        background: #f7fafc;
+        border-left: 3px solid #667eea;
+        font-size: 0.9rem;
+        color: #4a5568;
+        line-height: 1.5;
+    }
+    
+    .amount {
+        text-align: right;
+        font-weight: 600;
+    }
+    
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 40px;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(72, 187, 120, 0.4);
+    }
+    
+    .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+        background: #e2e8f0;
+        color: #4a5568;
+    }
+    
+    .btn-secondary:hover {
+        background: #cbd5e0;
+    }
+    
+    .btn-icon {
+        font-size: 1.3rem;
+    }
+    
+    @media (max-width: 768px) {
+        .invoice-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .line-items-table {
+            font-size: 0.9rem;
+        }
+        
+        .line-items-table th,
+        .line-items-table td {
+            padding: 10px 15px;
+        }
+        
+        .button-group {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const btn = document.getElementById('generateBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<span>Generating...</span><span class="btn-icon">⏳</span>';
+    });
+</script>
+{% endblock %}

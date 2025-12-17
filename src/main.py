@@ -4,15 +4,16 @@ import os
 import json
 from datetime import datetime, timedelta
 import pytz
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from timeular.client import TimeularClient
 from freshbooks.client import FreshbooksClient
 from freshbooks.authentication import get_freshbooks_session
 from timeular.csv_handler import load_time_entries_from_excel
 
+
 def main():
     # Load environment variables
-    load_dotenv()
+    load_dotenv(find_dotenv())
     
     # Get API credentials from environment
     timeular_api_key = os.getenv("TIMEULAR_API_KEY")

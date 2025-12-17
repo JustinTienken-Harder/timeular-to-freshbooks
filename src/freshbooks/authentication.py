@@ -17,9 +17,13 @@ import pandas as pd
 import requests
 import calendar
 import time
+from dotenv import load_dotenv, find_dotenv
 
 from freshbooks.client import FreshbooksClient
 from timeular.client import TimeularClient
+
+load_dotenv(find_dotenv())
+
 
 def generate_self_signed_cert():
     """Generate a self-signed certificate for HTTPS."""

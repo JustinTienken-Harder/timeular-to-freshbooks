@@ -21,6 +21,7 @@ from werkzeug.utils import secure_filename
 from waveapps.client import WaveAppClient
 from waveapps.csv_processor import TimeularCSVProcessor
 from waveapps.models import Invoice, InvoiceItem
+from waveapps.mapping_cache import MappingCache
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -46,6 +47,10 @@ Session(app)
 # Ensure folders exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(SESSION_FOLDER, exist_ok=True)
+
+# Initialize mapping cache
+mapping_cache = MappingCache()
+logger.info(f"Mapping cache initialized with {mapping_cache.get_cache_stats()['total_activities']} activities, {mapping_cache.get_cache_stats()['total_tags']} tags")
 
 # Initialize WaveApp client (will be None if credentials not set)
 waveapp_client = None
@@ -153,6 +158,12 @@ def match():
         customers = waveapp_client.get_customers()
         products = waveapp_client.get_products()
         
+        # Load cached mappings
+        cached_activity_mappings = mapping_cache.get_all_activity_mappings()
+        cached_tag_mappings = mapping_cache.get_all_tag_mappings()
+        
+        logger.info(f"Loaded {len(cached_activity_mappings)} cached activity mappings, {len(cached_tag_mappings)} cached tag mappings")
+        
         return render_template(
             'waveapp/match.html',
             activities=activities,
@@ -160,7 +171,9 @@ def match():
             customers=customers,
             products=products,
             processed_data=processed_data,
-            summary=session.get('summary', {})
+            summary=session.get('summary', {}),
+            cached_activity_mappings=cached_activity_mappings,
+            cached_tag_mappings=cached_tag_mappings
         )
         
     except Exception as e:
@@ -216,6 +229,9 @@ def submit_mappings():
         # Store mappings in session
         session['activity_mappings'] = activity_mappings
         session['tag_mappings'] = tag_mappings
+        
+        # Save mappings to cache for future use
+        mapping_cache.save_mappings(activity_mappings, tag_mappings)
         
         logger.info(f"Saved mappings: {len(activity_mappings)} activities, {len(tag_mappings)} tags")
         return redirect(url_for('preview'))

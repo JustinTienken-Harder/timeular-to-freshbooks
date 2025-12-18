@@ -163,3 +163,5 @@ cython_debug/
 
 */uploads/*
 /uploads/*
+mapping_cache.json
+oauth_token.json

@@ -139,6 +139,10 @@ class TimeularCSVProcessor:
         self.df['Tags'] = self.df['Tags'].fillna('')
         self.df['Note'] = self.df['Note'].fillna('')
         
+        # Ensure StartDate is available for formatting notes
+        if 'StartDate' not in self.df.columns:
+            logger.warning("StartDate column not found, notes will not include dates")
+        
         result = {}
         
         # Group by Activity (client)
@@ -153,8 +157,19 @@ class TimeularCSVProcessor:
                 # Sum hours
                 total_hours = tag_group['Hours'].sum()
                 
-                # Aggregate notes (filter out empty strings, join with newlines)
-                notes_list = [note.strip() for note in tag_group['Note'].tolist() if note.strip()]
+                # Aggregate notes with dates (filter out empty strings)
+                notes_list = []
+                for _, row in tag_group.iterrows():
+                    note = str(row['Note']).strip()
+                    if note:
+                        # Format: Date: Note
+                        if 'StartDate' in row and pd.notna(row['StartDate']):
+                            date_str = pd.to_datetime(row['StartDate']).strftime('%Y-%m-%d')
+                            formatted_note = f"{date_str}: {note}"
+                        else:
+                            formatted_note = note
+                        notes_list.append(formatted_note)
+                
                 aggregated_notes = '\n'.join(notes_list) if notes_list else ''
                 
                 activity_data['entries_by_tag'][tag] = {

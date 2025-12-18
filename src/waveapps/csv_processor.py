@@ -153,9 +153,9 @@ class TimeularCSVProcessor:
                 # Sum hours
                 total_hours = tag_group['Hours'].sum()
                 
-                # Aggregate notes (filter out empty strings)
+                # Aggregate notes (filter out empty strings, join with newlines)
                 notes_list = [note.strip() for note in tag_group['Note'].tolist() if note.strip()]
-                aggregated_notes = ' | '.join(notes_list) if notes_list else ''
+                aggregated_notes = '\n'.join(notes_list) if notes_list else ''
                 
                 activity_data['entries_by_tag'][tag] = {
                     'hours': round(total_hours, 2),

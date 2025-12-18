@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}WaveApp Invoice Generator{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='waveapp/styles.css') }}">
+    <!-- Select2 for searchable dropdowns -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         /* Inline critical CSS for base layout */
         * {
@@ -123,6 +125,10 @@
         </div>
     </footer>
     
+    <!-- jQuery required for Select2 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ url_for('static', filename='waveapp/app.js') }}"></script>
     {% block extra_js %}{% endblock %}
 </body>

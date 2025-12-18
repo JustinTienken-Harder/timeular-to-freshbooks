@@ -18,57 +18,71 @@
         </div>
     </div>
     
-    <div class="invoices-container">
-        {% for invoice in invoices %}
-        <div class="invoice-card">
-            <div class="invoice-header">
-                <div>
-                    <h3>{{ invoice.customer_name }}</h3>
-                    {% if invoice.customer_email %}
-                    <p class="customer-email">{{ invoice.customer_email }}</p>
-                    {% endif %}
-                </div>
-                <div class="invoice-total">
-                    ${{ "%.2f"|format(invoice.total) }}
-                </div>
-            </div>
-            
-            <table class="line-items-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Hours</th>
-                        <th>Rate</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in invoice.line_items %}
-                    <tr>
-                        <td>
-                            <strong>{{ item.product_name }}</strong>
-                            {% if item.notes %}
-                            <div class="item-notes">{{ item.notes }}</div>
+    <form action="{{ url_for('generate_invoices') }}" method="POST" id="invoiceForm">
+        <div class="invoices-container">
+            {% for invoice in invoices %}
+            <div class="invoice-card" data-invoice-id="{{ invoice.invoice_id }}">
+                <div class="invoice-header">
+                    <div class="invoice-header-left">
+                        <label class="checkbox-container">
+                            <input type="checkbox" 
+                                   name="include_{{ invoice.invoice_id }}" 
+                                   class="include-checkbox"
+                                   checked>
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">Include this invoice</span>
+                        </label>
+                        <div>
+                            <h3>{{ invoice.customer_name }}</h3>
+                            {% if invoice.customer_email %}
+                            <p class="customer-email">{{ invoice.customer_email }}</p>
                             {% endif %}
-                        </td>
-                        <td>{{ "%.2f"|format(item.quantity) }}</td>
-                        <td>${{ "%.2f"|format(item.rate) }}</td>
-                        <td class="amount">${{ "%.2f"|format(item.total) }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3"><strong>Invoice Total</strong></td>
-                        <td class="amount"><strong>${{ "%.2f"|format(invoice.total) }}</strong></td>
-                    </tr>
-                </tfoot>
-            </table>
+                        </div>
+                    </div>
+                    <div class="invoice-total">
+                        ${{ "%.2f"|format(invoice.total) }}
+                    </div>
+                </div>
+                
+                <table class="line-items-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Hours</th>
+                            <th>Rate</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in invoice.line_items %}
+                        <tr>
+                            <td>
+                                <strong>{{ item.product_name }}</strong>
+                                <div class="item-notes-container">
+                                    <label class="notes-label">Notes:</label>
+                                    <textarea 
+                                        name="notes_{{ item.item_id }}" 
+                                        class="notes-textarea"
+                                        rows="3"
+                                        placeholder="Add notes for this line item...">{{ item.notes }}</textarea>
+                                </div>
+                            </td>
+                            <td>{{ "%.2f"|format(item.quantity) }}</td>
+                            <td>${{ "%.2f"|format(item.rate) }}</td>
+                            <td class="amount">${{ "%.2f"|format(item.total) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"><strong>Invoice Total</strong></td>
+                            <td class="amount"><strong>${{ "%.2f"|format(invoice.total) }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    
-    <form action="{{ url_for('generate_invoices') }}" method="POST">
         <div class="button-group">
             <a href="{{ url_for('match') }}" class="btn btn-secondary">
                 <span>← Back to Matching</span>
@@ -144,10 +158,65 @@
     .invoice-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         padding: 20px 25px;
         background: #f7fafc;
         border-bottom: 2px solid #e2e8f0;
+    }
+    
+    .invoice-header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        user-select: none;
+        padding: 8px 12px;
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+    
+    .checkbox-container:hover {
+        border-color: #667eea;
+        background: #f7fafc;
+    }
+    
+    .checkbox-container input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        accent-color: #667eea;
+    }
+    
+    .checkbox-label {
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 0.95rem;
+    }
+    
+    .invoice-card[data-excluded="true"] {
+        opacity: 0.5;
+        position: relative;
+    }
+    
+    .invoice-card[data-excluded="true"]::after {
+        content: "EXCLUDED";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-15deg);
+        font-size: 3rem;
+        font-weight: 900;
+        color: #fc8181;
+        opacity: 0.2;
+        pointer-events: none;
     }
     
     .invoice-header h3 {
@@ -199,14 +268,41 @@
         background: #f7fafc;
     }
     
-    .item-notes {
-        margin-top: 8px;
-        padding: 10px;
-        background: #f7fafc;
-        border-left: 3px solid #667eea;
-        font-size: 0.9rem;
+    .item-notes-container {
+        margin-top: 12px;
+    }
+    
+    .notes-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
         color: #4a5568;
+        margin-bottom: 6px;
+    }
+    
+    .notes-textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid #e2e8f0;
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        color: #2d3748;
         line-height: 1.5;
+        resize: vertical;
+        transition: all 0.3s ease;
+        white-space: pre-wrap;
+    }
+    
+    .notes-textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .notes-textarea:disabled {
+        background: #f7fafc;
+        cursor: not-allowed;
     }
     
     .amount {
@@ -286,10 +382,55 @@
 </style>
 
 <script>
-    document.querySelector('form').addEventListener('submit', function(e) {
+    // Handle checkbox state changes
+    document.querySelectorAll('.include-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const invoiceCard = this.closest('.invoice-card');
+            const textareas = invoiceCard.querySelectorAll('.notes-textarea');
+            
+            if (!this.checked) {
+                invoiceCard.setAttribute('data-excluded', 'true');
+                textareas.forEach(ta => ta.disabled = true);
+            } else {
+                invoiceCard.removeAttribute('data-excluded');
+                textareas.forEach(ta => ta.disabled = false);
+            }
+            
+            updateGenerateButton();
+        });
+    });
+    
+    // Update generate button based on selected invoices
+    function updateGenerateButton() {
+        const checkedBoxes = document.querySelectorAll('.include-checkbox:checked');
+        const btn = document.getElementById('generateBtn');
+        const form = document.getElementById('invoiceForm');
+        
+        if (checkedBoxes.length === 0) {
+            btn.disabled = true;
+            btn.innerHTML = '<span>No Invoices Selected</span>';
+        } else {
+            btn.disabled = false;
+            btn.innerHTML = `<span>Generate ${checkedBoxes.length} Invoice${checkedBoxes.length > 1 ? 's' : ''} in WaveApp</span><span class="btn-icon">✓</span>`;
+        }
+    }
+    
+    // Handle form submission
+    document.getElementById('invoiceForm').addEventListener('submit', function(e) {
+        const checkedBoxes = document.querySelectorAll('.include-checkbox:checked');
+        
+        if (checkedBoxes.length === 0) {
+            e.preventDefault();
+            alert('Please select at least one invoice to generate.');
+            return;
+        }
+        
         const btn = document.getElementById('generateBtn');
         btn.disabled = true;
         btn.innerHTML = '<span>Generating...</span><span class="btn-icon">⏳</span>';
     });
+    
+    // Initial button state
+    updateGenerateButton();
 </script>
 {% endblock %}

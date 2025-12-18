@@ -245,6 +245,7 @@ def preview():
         
         # Build invoice preview data
         invoices_preview = []
+        invoice_idx = 0
         
         for activity, activity_data in processed_data.items():
             customer_id = activity_mappings.get(activity)
@@ -258,6 +259,7 @@ def preview():
             # Build line items
             line_items = []
             invoice_total = 0.0
+            item_idx = 0
             
             for tag, tag_data in activity_data['entries_by_tag'].items():
                 product_id = tag_mappings.get(tag)
@@ -274,20 +276,27 @@ def preview():
                 invoice_total += line_total
                 
                 line_items.append({
+                    'product_id': product_id,
                     'product_name': product.name,
                     'quantity': hours,
                     'rate': product.price,
                     'notes': notes,
-                    'total': line_total
+                    'total': line_total,
+                    'item_id': f'invoice_{invoice_idx}_item_{item_idx}'
                 })
+                item_idx += 1
             
             if line_items:
                 invoices_preview.append({
+                    'invoice_id': f'invoice_{invoice_idx}',
+                    'activity': activity,
+                    'customer_id': customer_id,
                     'customer_name': customer.name,
                     'customer_email': customer.email,
                     'line_items': line_items,
                     'total': invoice_total
                 })
+                invoice_idx += 1
         
         return render_template(
             'waveapp/preview.html',
@@ -313,34 +322,61 @@ def generate_invoices():
         processed_data = session['processed_data']
         activity_mappings = session['activity_mappings']
         tag_mappings = session['tag_mappings']
+        form_data = request.form.to_dict()
+        
+        # Parse which invoices to include and edited notes
+        included_invoices = set()
+        edited_notes = {}
+        
+        for key, value in form_data.items():
+            if key.startswith('include_invoice_'):
+                invoice_idx = key.replace('include_invoice_', '')
+                included_invoices.add(int(invoice_idx))
+            elif key.startswith('notes_invoice_'):
+                # Format: notes_invoice_0_item_0
+                edited_notes[key.replace('notes_', '')] = value
         
         created_invoices = []
         errors = []
         
         # Create invoices for each activity
+        invoice_idx = 0
         for activity, activity_data in processed_data.items():
             customer_id = activity_mappings.get(activity)
             if not customer_id:
                 errors.append(f"No customer mapping for {activity}")
                 continue
             
+            # Check if this invoice should be included
+            if invoice_idx not in included_invoices:
+                logger.info(f"Skipping invoice for {activity} (not included)")
+                invoice_idx += 1
+                continue
+            
             # Build line items
             items = []
+            item_idx = 0
             for tag, tag_data in activity_data['entries_by_tag'].items():
                 product_id = tag_mappings.get(tag)
                 if not product_id:
                     errors.append(f"No service mapping for tag '{tag}' in {activity}")
                     continue
                 
+                # Get edited notes or use original
+                notes_key = f'invoice_{invoice_idx}_item_{item_idx}'
+                notes = edited_notes.get(notes_key, tag_data['notes'])
+                
                 item = InvoiceItem(
                     product_id=product_id,
                     quantity=tag_data['hours'],
-                    description=tag_data['notes']
+                    description=notes
                 )
                 items.append(item)
+                item_idx += 1
             
             if not items:
                 errors.append(f"No valid line items for {activity}")
+                invoice_idx += 1
                 continue
             
             # Create invoice
@@ -363,6 +399,8 @@ def generate_invoices():
                 error_msg = f"Failed to create invoice for {activity}: {str(e)}"
                 errors.append(error_msg)
                 logger.error(error_msg)
+            
+            invoice_idx += 1
         
         # Store results in session
         session['created_invoices'] = created_invoices

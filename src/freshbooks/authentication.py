@@ -18,12 +18,13 @@ import requests
 import calendar
 import time
 from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 from freshbooks.client import FreshbooksClient
 from timeular.client import TimeularClient
 
+# Load environment variables from .env file
 load_dotenv(find_dotenv())
-
 
 def generate_self_signed_cert():
     """Generate a self-signed certificate for HTTPS."""

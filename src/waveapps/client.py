@@ -300,3 +300,155 @@ class WaveAppClient:
                 return product
         
         return None
+    
+    def get_draft_invoices(self, customer_id: Optional[str] = None) -> List[Dict[str, Any]]:
+        """
+        Fetch draft invoices for the business
+        
+        Args:
+            customer_id: Optional customer ID to filter drafts
+            
+        Returns:
+            List of draft invoice dictionaries
+        """
+        query = """
+        query GetDraftInvoices($businessId: ID!) {
+          business(id: $businessId) {
+            invoices(page: 1, pageSize: 100, status: DRAFT) {
+              edges {
+                node {
+                  id
+                  invoiceNumber
+                  invoiceDate
+                  customer {
+                    id
+                    name
+                  }
+                  items {
+                    product {
+                      id
+                      name
+                    }
+                    quantity
+                    description
+                  }
+                  total {
+                    value
+                  }
+                }
+              }
+            }
+          }
+        }
+        """
+        
+        variables = {"businessId": self.business_id}
+        
+        try:
+            data = self._execute_query(query, variables)
+            edges = data.get("business", {}).get("invoices", {}).get("edges", [])
+            
+            drafts = []
+            for edge in edges:
+                node = edge["node"]
+                draft_customer_id = node.get("customer", {}).get("id")
+                
+                # Filter by customer if specified
+                if customer_id and draft_customer_id != customer_id:
+                    continue
+                
+                drafts.append({
+                    "id": node.get("id"),
+                    "invoice_number": node.get("invoiceNumber"),
+                    "invoice_date": node.get("invoiceDate"),
+                    "customer_id": draft_customer_id,
+                    "customer_name": node.get("customer", {}).get("name"),
+                    "items": node.get("items", []),
+                    "total": float(node.get("total", {}).get("value", 0))
+                })
+            
+            logger.info(f"Found {len(drafts)} draft invoices")
+            return drafts
+            
+        except Exception as e:
+            logger.error(f"Failed to fetch draft invoices: {e}")
+            return []
+    
+    def update_invoice(self, invoice_id: str, invoice: Invoice) -> Invoice:
+        """
+        Update an existing draft invoice in WaveApp
+        
+        Args:
+            invoice_id: ID of the draft invoice to update
+            invoice: Invoice object with updated data
+            
+        Returns:
+            Updated Invoice object
+        """
+        # Build line items for the mutation
+        items_input = []
+        for item in invoice.items:
+            items_input.append({
+                "productId": item.product_id,
+                "quantity": str(item.quantity),
+                "description": item.description
+            })
+        
+        mutation = """
+        mutation UpdateInvoice($input: InvoiceUpdateInput!) {
+          invoiceUpdate(input: $input) {
+            invoice {
+              id
+              invoiceNumber
+              total {
+                value
+                currency {
+                  code
+                }
+              }
+              viewUrl
+            }
+            didSucceed
+            inputErrors {
+              message
+              path
+            }
+          }
+        }
+        """
+        
+        # Prepare invoice input
+        invoice_input = {
+            "invoiceId": invoice_id,
+            "customerId": invoice.customer_id,
+            "items": items_input,
+            "invoiceDate": invoice.invoice_date.strftime("%Y-%m-%d")
+        }
+        
+        if invoice.due_date:
+            invoice_input["dueDate"] = invoice.due_date.strftime("%Y-%m-%d")
+        
+        variables = {"input": invoice_input}
+        
+        try:
+            data = self._execute_query(mutation, variables)
+            result = data.get("invoiceUpdate", {})
+            
+            if not result.get("didSucceed"):
+                errors = result.get("inputErrors", [])
+                error_messages = [err.get("message", str(err)) for err in errors]
+                raise Exception(f"Invoice update failed: {', '.join(error_messages)}")
+            
+            # Update invoice with response data
+            invoice_data = result.get("invoice", {})
+            invoice.invoice_id = invoice_data.get("id")
+            invoice.invoice_number = invoice_data.get("invoiceNumber")
+            invoice.total = float(invoice_data.get("total", {}).get("value", 0))
+            invoice.view_url = invoice_data.get("viewUrl")
+            
+            logger.info(f"Updated invoice {invoice.invoice_number} (ID: {invoice_id})")
+            return invoice
+            
+        except Exception as e:
+            logger.error(f"Failed to update invoice: {e}")
+            raise

@@ -37,10 +37,21 @@
                             {% if invoice.customer_email %}
                             <p class="customer-email">{{ invoice.customer_email }}</p>
                             {% endif %}
+                            {% if invoice.has_draft %}
+                            <div class="draft-badge">
+                                <span class="draft-icon">📝</span>
+                                <span class="draft-text">Draft exists: {{ invoice.draft_number }}</span>
+                                <span class="draft-amount">(Current: ${{ "%.2f"|format(invoice.draft_total) }})</span>
+                                <input type="hidden" name="draft_id_{{ loop.index0 }}" value="{{ invoice.draft_id }}">
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="invoice-total">
                         ${{ "%.2f"|format(invoice.total) }}
+                        {% if invoice.has_draft %}
+                        <div class="total-label">New Total</div>
+                        {% endif %}
                     </div>
                 </div>
                 
@@ -230,10 +241,47 @@
         font-size: 0.9rem;
     }
     
+    .draft-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+        padding: 8px 12px;
+        background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #744210;
+        box-shadow: 0 2px 6px rgba(255, 215, 0, 0.3);
+    }
+    
+    .draft-icon {
+        font-size: 1.1rem;
+    }
+    
+    .draft-text {
+        font-weight: 700;
+    }
+    
+    .draft-amount {
+        font-weight: 500;
+        opacity: 0.9;
+    }
+    
     .invoice-total {
         font-size: 1.8rem;
         font-weight: 700;
         color: #667eea;
+        text-align: right;
+    }
+    
+    .total-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #48bb78;
+        margin-top: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     
     .line-items-table {

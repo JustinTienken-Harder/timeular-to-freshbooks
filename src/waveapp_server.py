@@ -259,6 +259,10 @@ def preview():
         customers = {c.id: c for c in waveapp_client.get_customers()}
         products = {p.id: p for p in waveapp_client.get_products()}
         
+        # Fetch existing draft invoices
+        draft_invoices = waveapp_client.get_draft_invoices()
+        drafts_by_customer = {draft['customer_id']: draft for draft in draft_invoices}
+        
         # Build invoice preview data
         invoices_preview = []
         invoice_idx = 0
@@ -271,6 +275,9 @@ def preview():
             customer = customers.get(customer_id)
             if not customer:
                 continue
+            
+            # Check if draft exists for this customer
+            existing_draft = drafts_by_customer.get(customer_id)
             
             # Build line items
             line_items = []
@@ -303,7 +310,7 @@ def preview():
                 item_idx += 1
             
             if line_items:
-                invoices_preview.append({
+                invoice_data = {
                     'invoice_id': f'invoice_{invoice_idx}',
                     'activity': activity,
                     'customer_id': customer_id,
@@ -311,7 +318,18 @@ def preview():
                     'customer_email': customer.email,
                     'line_items': line_items,
                     'total': invoice_total
-                })
+                }
+                
+                # Add draft info if exists
+                if existing_draft:
+                    invoice_data['has_draft'] = True
+                    invoice_data['draft_id'] = existing_draft['id']
+                    invoice_data['draft_number'] = existing_draft['invoice_number']
+                    invoice_data['draft_total'] = existing_draft['total']
+                else:
+                    invoice_data['has_draft'] = False
+                
+                invoices_preview.append(invoice_data)
                 invoice_idx += 1
         
         return render_template(
@@ -340,9 +358,10 @@ def generate_invoices():
         tag_mappings = session['tag_mappings']
         form_data = request.form.to_dict()
         
-        # Parse which invoices to include and edited notes
+        # Parse which invoices to include, edited notes, and draft IDs
         included_invoices = set()
         edited_notes = {}
+        draft_ids = {}
         
         for key, value in form_data.items():
             if key.startswith('include_invoice_'):
@@ -351,11 +370,16 @@ def generate_invoices():
             elif key.startswith('notes_invoice_'):
                 # Format: notes_invoice_0_item_0
                 edited_notes[key.replace('notes_', '')] = value
+            elif key.startswith('draft_id_'):
+                # Format: draft_id_0
+                invoice_idx = int(key.replace('draft_id_', ''))
+                draft_ids[invoice_idx] = value
         
         created_invoices = []
+        updated_invoices = []
         errors = []
         
-        # Create invoices for each activity
+        # Create or update invoices for each activity
         invoice_idx = 0
         for activity, activity_data in processed_data.items():
             customer_id = activity_mappings.get(activity)
@@ -395,7 +419,7 @@ def generate_invoices():
                 invoice_idx += 1
                 continue
             
-            # Create invoice
+            # Create invoice object
             invoice = Invoice(
                 customer_id=customer_id,
                 items=items,
@@ -403,27 +427,55 @@ def generate_invoices():
             )
             
             try:
-                created_invoice = waveapp_client.create_invoice(invoice)
-                created_invoices.append({
-                    'activity': activity,
-                    'invoice_number': created_invoice.invoice_number,
-                    'total': created_invoice.total,
-                    'view_url': created_invoice.view_url
-                })
-                logger.info(f"Created invoice {created_invoice.invoice_number} for {activity}")
+                # Check if updating existing draft or creating new
+                draft_id = draft_ids.get(invoice_idx)
+                
+                if draft_id:
+                    # Update existing draft
+                    updated_invoice = waveapp_client.update_invoice(draft_id, invoice)
+                    updated_invoices.append({
+                        'activity': activity,
+                        'invoice_number': updated_invoice.invoice_number,
+                        'total': updated_invoice.total,
+                        'view_url': updated_invoice.view_url,
+                        'updated': True
+                    })
+                    logger.info(f"Updated draft invoice {updated_invoice.invoice_number} for {activity}")
+                else:
+                    # Create new invoice
+                    created_invoice = waveapp_client.create_invoice(invoice)
+                    created_invoices.append({
+                        'activity': activity,
+                        'invoice_number': created_invoice.invoice_number,
+                        'total': created_invoice.total,
+                        'view_url': created_invoice.view_url,
+                        'updated': False
+                    })
+                    logger.info(f"Created invoice {created_invoice.invoice_number} for {activity}")
+                    
             except Exception as e:
-                error_msg = f"Failed to create invoice for {activity}: {str(e)}"
+                error_msg = f"Failed to {'update' if draft_id else 'create'} invoice for {activity}: {str(e)}"
                 errors.append(error_msg)
                 logger.error(error_msg)
             
             invoice_idx += 1
         
+        # Combine created and updated invoices
+        all_invoices = created_invoices + updated_invoices
+        
         # Store results in session
-        session['created_invoices'] = created_invoices
+        session['created_invoices'] = all_invoices
         session['errors'] = errors
         
-        if created_invoices:
-            flash(f"Successfully created {len(created_invoices)} invoice(s)", 'success')
+        if all_invoices:
+            created_count = len(created_invoices)
+            updated_count = len(updated_invoices)
+            msg_parts = []
+            if created_count > 0:
+                msg_parts.append(f"created {created_count} invoice(s)")
+            if updated_count > 0:
+                msg_parts.append(f"updated {updated_count} draft(s)")
+            flash(f"Successfully {' and '.join(msg_parts)}", 'success')
         if errors:
             flash(f"{len(errors)} error(s) occurred", 'warning')
         

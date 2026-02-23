@@ -12,11 +12,24 @@
     
     {% if invoices %}
     <div class="invoices-list">
-        <h3>Created Invoices ({{ invoices|length }})</h3>
+        <h3>
+            {% set created_count = invoices|selectattr('updated', 'false')|list|length %}
+            {% set updated_count = invoices|selectattr('updated', 'true')|list|length %}
+            {% if created_count > 0 and updated_count > 0 %}
+                Created {{ created_count }} and Updated {{ updated_count }} Invoices
+            {% elif updated_count > 0 %}
+                Updated {{ updated_count }} Draft Invoices
+            {% else %}
+                Created {{ created_count }} Invoices
+            {% endif %}
+        </h3>
         
         {% for invoice in invoices %}
-        <div class="invoice-item">
+        <div class="invoice-item {% if invoice.updated %}invoice-updated{% endif %}">
             <div class="invoice-info">
+                {% if invoice.updated %}
+                <div class="updated-badge">📝 Updated Draft</div>
+                {% endif %}
                 <div class="invoice-number">Invoice #{{ invoice.invoice_number }}</div>
                 <div class="invoice-customer">{{ invoice.activity }}</div>
                 <div class="invoice-total">${{ "%.2f"|format(invoice.total) }}</div>
@@ -113,9 +126,26 @@
         transition: all 0.3s ease;
     }
     
+    .invoice-item.invoice-updated {
+        border-color: #ffd700;
+        background: #fffef0;
+    }
+    
     .invoice-item:hover {
         border-color: #667eea;
         box-shadow: 0 2px 10px rgba(102, 126, 234, 0.1);
+    }
+    
+    .updated-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+        color: #744210;
+        font-size: 0.8rem;
+        font-weight: 700;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        box-shadow: 0 2px 6px rgba(255, 215, 0, 0.3);
     }
     
     .invoice-info {

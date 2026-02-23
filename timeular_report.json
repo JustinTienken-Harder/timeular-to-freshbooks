@@ -1,0 +1,1599 @@
+{
+    "timeEntries": [
+        {
+            "id": "99133952",
+            "activity": {
+                "id": "1825855",
+                "name": "AllAmericanSweep",
+                "color": "#ff5c00",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-02T20:15:41.026",
+                "stoppedAt": "2025-02-02T20:56:32.194"
+            },
+            "note": {
+                "text": "Time related to handling issues with both payment and management of the website losing the email due to spam attack on the server generated from the website. Clean out entries, verify ReCaptcha and install, setup, fix issues on Siteground (then support to fix billing on siteground)",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99134749",
+            "activity": {
+                "id": "1627080",
+                "name": "Studio Waltz",
+                "color": "#ee3388",
+                "folderId": "175549"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "175549",
+                "name": "Volunteer"
+            },
+            "duration": {
+                "startedAt": "2025-02-02T21:10:00.000",
+                "stoppedAt": "2025-02-02T23:52:53.610"
+            },
+            "note": {
+                "text": "Start Studio Waltz website work, graphics creation, send emails to group, coordinate adding maps and artists, and publish.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99184597",
+            "activity": {
+                "id": "1465818",
+                "name": "SPC: IR",
+                "color": "#2244ee",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-03T16:34:33.949",
+                "stoppedAt": "2025-02-03T17:00:27.765"
+            },
+            "note": {
+                "text": "Isolating what will happen with request to fix things on the IR page from marketing (which I am not clear on) and handle item #2",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99188121",
+            "activity": {
+                "id": "1627080",
+                "name": "Studio Waltz",
+                "color": "#ee3388",
+                "folderId": "175549"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "175549",
+                "name": "Volunteer"
+            },
+            "duration": {
+                "startedAt": "2025-02-03T17:39:15.548",
+                "stoppedAt": "2025-02-03T22:40:06.722"
+            },
+            "note": {
+                "text": "work on brochure and poster - send emails and manage communications. Run zoom meeting and final tweaks to site - create bio for Trish and add to the website",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99243116",
+            "activity": {
+                "id": "1140175",
+                "name": "GulfCoast",
+                "color": "#17bbd2",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-04T15:55:00.000",
+                "stoppedAt": "2025-02-04T17:07:12.699"
+            },
+            "note": {
+                "text": "review with Hana if there is an issue with a pdf that is showing publically (when should not). With Team, install Akismet license and activate with Gravity/Plugins, review with team purchase of Wordfence, approvals, license purchased and installed. Reviewing process for tickets, and discuss cache issues.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99303941",
+            "activity": {
+                "id": "1549027",
+                "name": "IronHorse",
+                "color": "#9e9e9e",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-05T17:00:00.000",
+                "stoppedAt": "2025-02-05T17:30:00.000"
+            },
+            "note": {
+                "text": "Rail Investments - helping rick with email. Issues with not having all the information. May need to have a call",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99303915",
+            "activity": {
+                "id": "1935311",
+                "name": "GulfCoast-HEART",
+                "color": "#0088ff",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-05T17:40:00.000",
+                "stoppedAt": "2025-02-05T17:50:00.000"
+            },
+            "note": {
+                "text": "Call with Rosemarie - to clarify needs for the screening form project.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99304036",
+            "activity": {
+                "id": "1465818",
+                "name": "SPC: IR",
+                "color": "#2244ee",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-05T17:52:49.580",
+                "stoppedAt": "2025-02-05T18:18:58.715"
+            },
+            "note": {
+                "text": "Call with Matthew to adjust.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99305500",
+            "activity": {
+                "id": "1934171",
+                "name": "MapURWellness",
+                "color": "#11aa99",
+                "folderId": "167783"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "167783",
+                "name": "Project"
+            },
+            "duration": {
+                "startedAt": "2025-02-05T18:30:57.960",
+                "stoppedAt": "2025-02-05T21:27:23.102"
+            },
+            "note": {
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99315874",
+            "activity": {
+                "id": "1935311",
+                "name": "GulfCoast-HEART",
+                "color": "#0088ff",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-06T02:04:15.822",
+                "stoppedAt": "2025-02-06T04:04:56.777"
+            },
+            "note": {
+                "text": "HEART - Gravity forms - development of screening tool integration into the current form.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99359531",
+            "activity": {
+                "id": "1627080",
+                "name": "Studio Waltz",
+                "color": "#ee3388",
+                "folderId": "175549"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "175549",
+                "name": "Volunteer"
+            },
+            "duration": {
+                "startedAt": "2025-02-06T18:00:00.000",
+                "stoppedAt": "2025-02-06T18:30:00.000"
+            },
+            "note": {
+                "text": "work on newsletter",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99359516",
+            "activity": {
+                "id": "1935311",
+                "name": "GulfCoast-HEART",
+                "color": "#0088ff",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-06T18:57:18.486",
+                "stoppedAt": "2025-02-06T19:16:17.487"
+            },
+            "note": {
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99362469",
+            "activity": {
+                "id": "1934171",
+                "name": "MapURWellness",
+                "color": "#11aa99",
+                "folderId": "167783"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "167783",
+                "name": "Project"
+            },
+            "duration": {
+                "startedAt": "2025-02-06T19:18:00.000",
+                "stoppedAt": "2025-02-06T20:00:00.000"
+            },
+            "note": {
+                "text": "Discuss site and next steps for packages, review changes, advise on what needs to happen for content changes",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99472688",
+            "activity": {
+                "id": "441840",
+                "name": "Client Work (Misc)",
+                "color": "#9b2bae",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-07T18:00:00.000",
+                "stoppedAt": "2025-02-07T18:30:00.000"
+            },
+            "note": {
+                "text": "YAL - Consult with Gloria on site for husbands book, and Practically Disabled book - changes to current website.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99472809",
+            "activity": {
+                "id": "1935311",
+                "name": "GulfCoast-HEART",
+                "color": "#0088ff",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-07T19:30:50.108",
+                "stoppedAt": "2025-02-07T19:50:21.699"
+            },
+            "note": {
+                "text": "Finalize the pre-screen only tool - situate on site with link to department",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99473999",
+            "activity": {
+                "id": "1344826",
+                "name": "FMH Legal",
+                "color": "#0f9587",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-07T19:55:21.699",
+                "stoppedAt": "2025-02-07T20:10:00.000"
+            },
+            "note": {
+                "text": "Remove Ryan Tahiri from site - create a redirect and verify other pages do not have info",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99591293",
+            "activity": {
+                "id": "1934171",
+                "name": "MapURWellness",
+                "color": "#11aa99",
+                "folderId": "167783"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "167783",
+                "name": "Project"
+            },
+            "duration": {
+                "startedAt": "2025-02-11T16:28:54.182",
+                "stoppedAt": "2025-02-11T18:29:07.459"
+            },
+            "note": {
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99600133",
+            "activity": {
+                "id": "1934171",
+                "name": "MapURWellness",
+                "color": "#11aa99",
+                "folderId": "167783"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "167783",
+                "name": "Project"
+            },
+            "duration": {
+                "startedAt": "2025-02-11T19:50:35.167",
+                "stoppedAt": "2025-02-11T20:58:25.128"
+            },
+            "note": {
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99658132",
+            "activity": {
+                "id": "1375004",
+                "name": "PASS",
+                "color": "#374046",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-12T16:40:07.203",
+                "stoppedAt": "2025-02-12T17:32:04.733"
+            },
+            "note": {
+                "text": "Meeting about needs for the site/forms and submissions",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99665730",
+            "activity": {
+                "id": "441760",
+                "name": "UU",
+                "color": "#00bbaa",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-12T19:04:53.200",
+                "stoppedAt": "2025-02-12T19:22:27.904"
+            },
+            "note": {
+                "text": "Wyatt Espalin concert post for UU",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99779173",
+            "activity": {
+                "id": "1879599",
+                "name": "MAP - Melissa Powers",
+                "color": "#00bbaa",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-15T18:00:00.000",
+                "stoppedAt": "2025-02-15T18:40:00.000"
+            },
+            "note": {
+                "text": "Meeting with Mike - Helping me with S-Corp",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99779186",
+            "activity": {
+                "id": "1879599",
+                "name": "MAP - Melissa Powers",
+                "color": "#00bbaa",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-15T19:00:00.000",
+                "stoppedAt": "2025-02-15T20:40:00.000"
+            },
+            "note": {
+                "text": "Work with Melissa on website tweaks, consult on next steps, what package descriptions may need. Set up Stripe and add to the back end of the website. Discuss freshbooks.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99779189",
+            "activity": {
+                "id": "1861113",
+                "name": "Sheila Ratliff",
+                "color": "#0088ff",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-15T21:30:00.000",
+                "stoppedAt": "2025-02-15T22:20:00.000"
+            },
+            "note": {
+                "text": "Work with Victor and Sheila on a few things in home offices",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99829242",
+            "activity": {
+                "id": "441760",
+                "name": "UU",
+                "color": "#00bbaa",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-18T02:00:00.000",
+                "stoppedAt": "2025-02-18T02:10:00.000"
+            },
+            "note": {
+                "text": "Add Kara to the website - remove job posting",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99829253",
+            "activity": {
+                "id": "914419",
+                "name": "Pepin-Lighthouse",
+                "color": "#8cc250",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-18T02:32:33.829",
+                "stoppedAt": "2025-02-18T02:37:36.942"
+            },
+            "note": {
+                "text": "insert tracking script for new tools",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99829486",
+            "activity": {
+                "id": "1140175",
+                "name": "GulfCoast",
+                "color": "#17bbd2",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-18T03:00:00.000",
+                "stoppedAt": "2025-02-18T03:10:00.000"
+            },
+            "note": {
+                "text": "Review changes and update license for plugin - update spreadsheet for group use on Monday.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99858271",
+            "activity": {
+                "id": "1626324",
+                "name": "FBii",
+                "color": "#44aa55",
+                "folderId": "175549"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "175549",
+                "name": "Volunteer"
+            },
+            "duration": {
+                "startedAt": "2025-02-18T13:20:00.000",
+                "stoppedAt": "2025-02-18T14:40:00.000"
+            },
+            "note": {
+                "text": "Run meeting - 10 participants",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99871170",
+            "activity": {
+                "id": "1140175",
+                "name": "GulfCoast",
+                "color": "#17bbd2",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-18T18:15:00.000",
+                "stoppedAt": "2025-02-18T19:10:08.135"
+            },
+            "note": {
+                "text": "Team meeting to discuss projects and progress. Update MONDAY, updated the Plugin List to group. Updated Heart.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99871377",
+            "activity": {
+                "id": "2013622",
+                "name": "Rail Investments",
+                "color": "#8899aa",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-18T19:11:00.687",
+                "stoppedAt": "2025-02-18T19:22:33.523"
+            },
+            "note": {
+                "text": "Research and review accounts for Rail Investments - identify if they are Office suites as well.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99871764",
+            "activity": {
+                "id": "1682970",
+                "name": "MyBalance",
+                "color": "#8855ff",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-18T19:22:40.438",
+                "stoppedAt": "2025-02-18T19:37:45.044"
+            },
+            "note": {
+                "text": "Respond to Becca - need to adjust items for site tracking - not able to sign into siteground so manual update created.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99950926",
+            "activity": {
+                "id": "1682970",
+                "name": "MyBalance",
+                "color": "#8855ff",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-19T13:30:00.000",
+                "stoppedAt": "2025-02-19T13:40:00.000"
+            },
+            "note": {
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99946293",
+            "activity": {
+                "id": "1682970",
+                "name": "MyBalance",
+                "color": "#8855ff",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-19T18:28:29.438",
+                "stoppedAt": "2025-02-19T18:57:32.927"
+            },
+            "note": {
+                "text": "Additional attempt to set up the account for Becca - was needing more information and access level with domain. Fixed",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99958042",
+            "activity": {
+                "id": "1589346",
+                "name": "Administrative",
+                "color": "#ffdd00",
+                "folderId": "168240"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "168240",
+                "name": "Internal"
+            },
+            "duration": {
+                "startedAt": "2025-02-19T21:30:00.000",
+                "stoppedAt": "2025-02-20T00:40:00.000"
+            },
+            "note": {
+                "text": "Work on my rates for 2025",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99958043",
+            "activity": {
+                "id": "1465818",
+                "name": "SPC: IR",
+                "color": "#2244ee",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-20T00:48:15.173",
+                "stoppedAt": "2025-02-20T03:52:52.996"
+            },
+            "note": {
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99991414",
+            "activity": {
+                "id": "1815953",
+                "name": "Allied - Kimi",
+                "color": "#ff5c00",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-20T16:35:52.230",
+                "stoppedAt": "2025-02-20T16:40:19.608"
+            },
+            "note": {
+                "text": "project",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99991663",
+            "activity": {
+                "id": "1960410",
+                "name": "FLH Website",
+                "color": "#22b1ee",
+                "folderId": "167783"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "167783",
+                "name": "Project"
+            },
+            "duration": {
+                "startedAt": "2025-02-20T16:40:29.918",
+                "stoppedAt": "2025-02-20T17:06:26.082"
+            },
+            "note": {
+                "text": "Phone call to discuss next steps - not doing full site. Only landing page. Reviewing writing in old places (mailchimp, blog)",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "99997264",
+            "activity": {
+                "id": "1815953",
+                "name": "Allied - Kimi",
+                "color": "#ff5c00",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-20T17:13:00.000",
+                "stoppedAt": "2025-02-20T18:28:00.000"
+            },
+            "note": {
+                "text": "project",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100046780",
+            "activity": {
+                "id": "1934818",
+                "name": "ART - Of Doing ART",
+                "color": "#22b1ee",
+                "folderId": "168240"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "168240",
+                "name": "Internal"
+            },
+            "duration": {
+                "startedAt": "2025-02-20T22:30:00.000",
+                "stoppedAt": "2025-02-21T01:30:00.000"
+            },
+            "note": {
+                "text": "work on framing small pieces - photographing and organizing",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100037954",
+            "activity": {
+                "id": "1606009",
+                "name": "SPC: SACS",
+                "color": "#2244ee",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-21T17:36:42.655",
+                "stoppedAt": "2025-02-21T18:40:00.000"
+            },
+            "note": {
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100046767",
+            "activity": {
+                "id": "1934818",
+                "name": "ART - Of Doing ART",
+                "color": "#22b1ee",
+                "folderId": "168240"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "168240",
+                "name": "Internal"
+            },
+            "duration": {
+                "startedAt": "2025-02-21T18:50:00.000",
+                "stoppedAt": "2025-02-21T21:20:00.000"
+            },
+            "note": {
+                "text": "administrative work to log pieces for art show",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100046862",
+            "activity": {
+                "id": "1815953",
+                "name": "Allied - Kimi",
+                "color": "#ff5c00",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-21T22:17:41.096",
+                "stoppedAt": "2025-02-22T02:07:03.409"
+            },
+            "note": {
+                "text": "<{{|t|7707676|}}>  Work on developing landing page for commercial inspection website",
+                "tags": [
+                    {
+                        "id": 7707676,
+                        "key": "ecb705f4-e194-4f95-925a-bb98a8ee5ce5",
+                        "label": "project",
+                        "scope": "timeular",
+                        "folderId": "44875"
+                    }
+                ],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100103485",
+            "activity": {
+                "id": "1549027",
+                "name": "IronHorse",
+                "color": "#9e9e9e",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-24T16:00:00.000",
+                "stoppedAt": "2025-02-24T16:40:00.000"
+            },
+            "note": {
+                "text": "Meeting with Tom and Mike to review and edit the Ironhorse Website and discuss the Rail site for upcoming changes.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100103489",
+            "activity": {
+                "id": "1465817",
+                "name": "SPC: HR",
+                "color": "#4051b3",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-24T16:41:50.182",
+                "stoppedAt": "2025-02-24T16:45:56.672"
+            },
+            "note": {
+                "text": "Questions regarding the EAEO resources page - which was removed from the HR site and directed to SPC main site pages. Emails with Jessica - research and response.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100107581",
+            "activity": {
+                "id": "1549027",
+                "name": "IronHorse",
+                "color": "#9e9e9e",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-24T17:00:00.000",
+                "stoppedAt": "2025-02-24T17:30:00.000"
+            },
+            "note": {
+                "text": "work on webpage and replace graphic for middle pillar",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100114547",
+            "activity": {
+                "id": "778375",
+                "name": "SHTMC",
+                "color": "#673bb5",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-24T18:00:00.000",
+                "stoppedAt": "2025-02-24T20:15:00.000"
+            },
+            "note": {
+                "text": "On site visit to handle Referizer integration for ads on FB",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100114564",
+            "activity": {
+                "id": "1549027",
+                "name": "IronHorse",
+                "color": "#9e9e9e",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-24T20:40:00.000",
+                "stoppedAt": "2025-02-24T21:15:09.757"
+            },
+            "note": {
+                "text": "Finish work on graphics for the page (pillars) fix forms (switch to Gravity for better integrations, and adjust language.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100114572",
+            "activity": {
+                "id": "1982250",
+                "name": "Rozalia - IMB",
+                "color": "#998899",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-24T21:15:15.327",
+                "stoppedAt": "2025-02-24T22:13:15.144"
+            },
+            "note": {
+                "text": "Efforts to manage Google my Business (3rd time)",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100116069",
+            "activity": {
+                "id": "441760",
+                "name": "UU",
+                "color": "#00bbaa",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-24T22:13:42.854",
+                "stoppedAt": "2025-02-24T22:52:11.025"
+            },
+            "note": {
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100158410",
+            "activity": {
+                "id": "1625730",
+                "name": "Ronette",
+                "color": "#8899aa",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-25T16:30:00.000",
+                "stoppedAt": "2025-02-25T17:50:00.000"
+            },
+            "note": {
+                "text": "Appointment to update and review needs, review files, review quickbooks process, and update on future updates.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100159940",
+            "activity": {
+                "id": "1140175",
+                "name": "GulfCoast",
+                "color": "#17bbd2",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-25T18:30:51.168",
+                "stoppedAt": "2025-02-25T19:35:25.135"
+            },
+            "note": {
+                "text": "meeting with crew - review a few things discussed in meeting and update Monday with upcoming tasks",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100161498",
+            "activity": {
+                "id": "778375",
+                "name": "SHTMC",
+                "color": "#673bb5",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-25T19:35:53.572",
+                "stoppedAt": "2025-02-25T20:30:36.945"
+            },
+            "note": {
+                "text": "website updates for St. Pattys day",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100303931",
+            "activity": {
+                "id": "441760",
+                "name": "UU",
+                "color": "#00bbaa",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-28T17:30:00.000",
+                "stoppedAt": "2025-02-28T18:29:19.122"
+            },
+            "note": {
+                "text": "Handle updates to SSL certificate, clear out email as I handle new forwarders, conversations with Kathy and Judy for member updating and computer setup for email to better prevent issues with server being clogged. Purchase certificate on behalf of UU (forward certificate info to myself)",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100307004",
+            "activity": {
+                "id": "1605182",
+                "name": "AgingCare",
+                "color": "#2244ee",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-28T18:46:21.847",
+                "stoppedAt": "2025-02-28T18:51:26.585"
+            },
+            "note": {
+                "text": "Adjustments to the business card for Vickie - send to Karla with back and info to purchase more from Overnight prints.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100307260",
+            "activity": {
+                "id": "1815953",
+                "name": "Allied - Kimi",
+                "color": "#ff5c00",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-02-28T18:56:55.702",
+                "stoppedAt": "2025-02-28T19:30:00.000"
+            },
+            "note": {
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100379284",
+            "activity": {
+                "id": "1935311",
+                "name": "GulfCoast-HEART",
+                "color": "#0088ff",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-03-03T17:48:04.518",
+                "stoppedAt": "2025-03-03T18:45:40.873"
+            },
+            "note": {
+                "text": "Call from Hana to troubleshoot reciepts that include a line item that is not usual for the tool after the update of fee recovery. Send, screenshots and troubleshooting report to GiveWP. Additionally, took a few moments to also handle the export for HEART gallery of child inquiries.",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100387365",
+            "activity": {
+                "id": "1626324",
+                "name": "FBii",
+                "color": "#44aa55",
+                "folderId": "175549"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "175549",
+                "name": "Volunteer"
+            },
+            "duration": {
+                "startedAt": "2025-03-03T19:10:00.000",
+                "stoppedAt": "2025-03-03T20:45:01.479"
+            },
+            "note": {
+                "text": "Letter to Julie, share with board, work on Meet up, work on Newsletter",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        },
+        {
+            "id": "100396398",
+            "activity": {
+                "id": "1982250",
+                "name": "Rozalia - IMB",
+                "color": "#998899",
+                "folderId": "44875"
+            },
+            "user": {
+                "id": "54374",
+                "name": "Evelyn Dufner",
+                "email": "help@mycomputerangel.com"
+            },
+            "folder": {
+                "id": "44875",
+                "name": "Web Clients"
+            },
+            "duration": {
+                "startedAt": "2025-03-03T23:40:00.000",
+                "stoppedAt": "2025-03-04T03:40:00.000"
+            },
+            "note": {
+                "text": "Develop the Rack Card - layout and design card and send to client",
+                "tags": [],
+                "mentions": []
+            },
+            "timezone": "Z"
+        }
+    ]
+}

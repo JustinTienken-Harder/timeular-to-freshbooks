@@ -263,6 +263,9 @@ def preview():
         draft_invoices = waveapp_client.get_draft_invoices()
         drafts_by_customer = {draft['customer_id']: draft for draft in draft_invoices}
         
+        # Store drafts in session for use during generation
+        session['draft_data'] = {draft['id']: draft for draft in draft_invoices}
+        
         # Build invoice preview data
         invoices_preview = []
         invoice_idx = 0
@@ -431,8 +434,12 @@ def generate_invoices():
                 draft_id = draft_ids.get(invoice_idx)
                 
                 if draft_id:
-                    # Update existing draft
-                    updated_invoice = waveapp_client.update_invoice(draft_id, invoice)
+                    # Get existing draft data from session
+                    draft_data = session.get('draft_data', {})
+                    existing_draft = draft_data.get(draft_id, {})
+                    
+                    # Update existing draft (append mode)
+                    updated_invoice = waveapp_client.update_invoice(draft_id, invoice, existing_draft)
                     updated_invoices.append({
                         'activity': activity,
                         'invoice_number': updated_invoice.invoice_number,

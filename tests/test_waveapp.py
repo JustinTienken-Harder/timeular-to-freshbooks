@@ -285,7 +285,19 @@ class TestWaveAppClient(unittest.TestCase):
         mock_response.raise_for_status = Mock()
         mock_post.return_value = mock_response
         
-        # Update invoice
+        # Existing draft data
+        existing_draft = {
+            'id': 'invoice_draft_1',
+            'items': [
+                {
+                    'product': {'id': 'product_1', 'name': 'Consulting'},
+                    'quantity': '3.0',
+                    'description': 'Previous consulting work'
+                }
+            ]
+        }
+        
+        # Update invoice (should append new items to existing)
         items = [
             InvoiceItem(
                 product_id="product_1",
@@ -299,7 +311,7 @@ class TestWaveAppClient(unittest.TestCase):
             invoice_date=datetime(2024, 3, 1)
         )
         
-        result = self.client.update_invoice("invoice_draft_1", invoice)
+        result = self.client.update_invoice("invoice_draft_1", invoice, existing_draft)
         
         # Verify
         self.assertEqual(result.invoice_id, "invoice_draft_1")
@@ -311,6 +323,13 @@ class TestWaveAppClient(unittest.TestCase):
         payload = call_args[1]['json']
         self.assertIn('invoiceUpdate', payload['query'])
         self.assertEqual(payload['variables']['input']['invoiceId'], 'invoice_draft_1')
+        # Verify quantity was merged (3.0 + 6.0 = 9.0)
+        items_sent = payload['variables']['input']['items']
+        self.assertEqual(len(items_sent), 1)
+        self.assertEqual(float(items_sent[0]['quantity']), 9.0)
+        # Verify descriptions were combined
+        self.assertIn('Previous consulting work', items_sent[0]['description'])
+        self.assertIn('Updated consulting work', items_sent[0]['description'])
     
     @patch('waveapps.client.requests.post')
     def test_create_invoice_failure(self, mock_post):

@@ -374,24 +374,56 @@ class WaveAppClient:
             logger.error(f"Failed to fetch draft invoices: {e}")
             return []
     
-    def update_invoice(self, invoice_id: str, invoice: Invoice) -> Invoice:
+    def update_invoice(self, invoice_id: str, invoice: Invoice, existing_draft: Dict[str, Any]) -> Invoice:
         """
-        Update an existing draft invoice in WaveApp
+        Update an existing draft invoice in WaveApp by appending new items
         
         Args:
             invoice_id: ID of the draft invoice to update
-            invoice: Invoice object with updated data
+            invoice: Invoice object with new data to append
+            existing_draft: Existing draft invoice data from get_draft_invoices()
             
         Returns:
             Updated Invoice object
         """
+        # Merge existing draft items with new items
+        # Group by product_id and combine quantities and descriptions
+        merged_items = {}
+        
+        # Add existing draft items
+        for existing_item in existing_draft.get('items', []):
+            product_id = existing_item.get('product', {}).get('id')
+            if product_id:
+                quantity = float(existing_item.get('quantity', 0))
+                description = existing_item.get('description', '')
+                merged_items[product_id] = {
+                    'quantity': quantity,
+                    'descriptions': [description] if description else []
+                }
+        
+        # Add/merge new items
+        for item in invoice.items:
+            if item.product_id in merged_items:
+                # Append to existing item
+                merged_items[item.product_id]['quantity'] += item.quantity
+                if item.description:
+                    merged_items[item.product_id]['descriptions'].append(item.description)
+            else:
+                # New item
+                merged_items[item.product_id] = {
+                    'quantity': item.quantity,
+                    'descriptions': [item.description] if item.description else []
+                }
+        
         # Build line items for the mutation
         items_input = []
-        for item in invoice.items:
+        for product_id, item_data in merged_items.items():
+            # Combine all descriptions with separator
+            combined_description = ' | '.join(item_data['descriptions'])
             items_input.append({
-                "productId": item.product_id,
-                "quantity": str(item.quantity),
-                "description": item.description
+                "productId": product_id,
+                "quantity": str(item_data['quantity']),
+                "description": combined_description
             })
         
         mutation = """

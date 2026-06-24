@@ -438,6 +438,15 @@ def generate_invoices():
                     draft_data = session.get('draft_data', {})
                     existing_draft = draft_data.get(draft_id, {})
                     
+                    # Validate draft belongs to this customer
+                    draft_customer_id = existing_draft.get('customer_id')
+                    if draft_customer_id != customer_id:
+                        error_msg = f"Draft {existing_draft.get('invoice_number', draft_id)} belongs to different customer (expected {customer_id}, got {draft_customer_id})"
+                        errors.append(error_msg)
+                        logger.error(error_msg)
+                        invoice_idx += 1
+                        continue
+                    
                     # Update existing draft (append mode)
                     updated_invoice = waveapp_client.update_invoice(draft_id, invoice, existing_draft)
                     updated_invoices.append({

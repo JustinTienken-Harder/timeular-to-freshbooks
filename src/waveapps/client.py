@@ -32,6 +32,20 @@ class WaveAppClient:
         self.business_id = business_id
         self.customers_cache: Optional[List[Customer]] = None
         self.products_cache: Optional[List[Product]] = None
+
+    @staticmethod
+    def _parse_float(value: Any, default: float = 0.0) -> float:
+        """Convert API numeric values to float, tolerating comma separators."""
+        if value is None:
+            return default
+        if isinstance(value, (int, float)):
+            return float(value)
+        if isinstance(value, str):
+            cleaned = value.replace(",", "").strip()
+            if not cleaned:
+                return default
+            return float(cleaned)
+        return float(value)
         
     def _execute_query(self, query: str, variables: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
@@ -65,12 +79,21 @@ class WaveAppClient:
             # Check for GraphQL errors
             if "errors" in data:
                 error_messages = [err.get("message", str(err)) for err in data["errors"]]
+                logger.error(f"GraphQL errors: {data['errors']}")
                 raise Exception(f"GraphQL errors: {', '.join(error_messages)}")
                 
             return data.get("data", {})
             
         except requests.exceptions.RequestException as e:
             logger.error(f"API request failed: {e}")
+            logger.error(f"Query: {query}")
+            logger.error(f"Variables: {variables}")
+            # Try to get response body for more details
+            try:
+                if hasattr(e, 'response') and e.response is not None:
+                    logger.error(f"Response body: {e.response.text}")
+            except:
+                pass
             raise Exception(f"Failed to execute WaveApp query: {e}")
     
     def get_customers(self, force_refresh: bool = False) -> List[Customer]:
@@ -170,7 +193,7 @@ class WaveAppClient:
                 Product(
                     id=edge["node"]["id"],
                     name=edge["node"]["name"],
-                    price=float(edge["node"].get("unitPrice", 0)),
+                    price=self._parse_float(edge["node"].get("unitPrice", 0)),
                     description=edge["node"].get("description", "")
                 )
                 for edge in edges
@@ -253,7 +276,7 @@ class WaveAppClient:
             invoice_data = result.get("invoice", {})
             invoice.invoice_id = invoice_data.get("id")
             invoice.invoice_number = invoice_data.get("invoiceNumber")
-            invoice.total = float(invoice_data.get("total", {}).get("value", 0))
+            invoice.total = self._parse_float(invoice_data.get("total", {}).get("value", 0))
             invoice.view_url = invoice_data.get("viewUrl")
             
             logger.info(f"Created invoice {invoice.invoice_number} for customer {invoice.customer_id}")
@@ -364,7 +387,7 @@ class WaveAppClient:
                     "customer_id": draft_customer_id,
                     "customer_name": node.get("customer", {}).get("name"),
                     "items": node.get("items", []),
-                    "total": float(node.get("total", {}).get("value", 0))
+                    "total": self._parse_float(node.get("total", {}).get("value", 0))
                 })
             
             logger.info(f"Found {len(drafts)} draft invoices")
@@ -394,7 +417,7 @@ class WaveAppClient:
         for existing_item in existing_draft.get('items', []):
             product_id = existing_item.get('product', {}).get('id')
             if product_id:
-                quantity = float(existing_item.get('quantity', 0))
+                quantity = self._parse_float(existing_item.get('quantity', 0))
                 description = existing_item.get('description', '')
                 merged_items[product_id] = {
                     'quantity': quantity,
@@ -449,10 +472,9 @@ class WaveAppClient:
         }
         """
         
-        # Prepare invoice input
+        # Prepare invoice input (don't include customerId - can't change customer on existing draft)
         invoice_input = {
             "invoiceId": invoice_id,
-            "customerId": invoice.customer_id,
             "items": items_input,
             "invoiceDate": invoice.invoice_date.strftime("%Y-%m-%d")
         }
@@ -463,6 +485,7 @@ class WaveAppClient:
         variables = {"input": invoice_input}
         
         try:
+            logger.info(f"Updating invoice {invoice_id} with {len(items_input)} items")
             data = self._execute_query(mutation, variables)
             result = data.get("invoiceUpdate", {})
             
@@ -475,7 +498,7 @@ class WaveAppClient:
             invoice_data = result.get("invoice", {})
             invoice.invoice_id = invoice_data.get("id")
             invoice.invoice_number = invoice_data.get("invoiceNumber")
-            invoice.total = float(invoice_data.get("total", {}).get("value", 0))
+            invoice.total = self._parse_float(invoice_data.get("total", {}).get("value", 0))
             invoice.view_url = invoice_data.get("viewUrl")
             
             logger.info(f"Updated invoice {invoice.invoice_number} (ID: {invoice_id})")
